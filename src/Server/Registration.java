@@ -1,25 +1,28 @@
 package Server;
+
 public class Registration {
 	private Student theStudent;
-	private Lecture  theOffering;
+	private Lecture theOffering;
 	private char grade;
 
-	void completeRegistration(Student st, Lecture  of) {
+	String completeRegistration(Student st, Lecture of) {
 
 		theStudent = st;
 		theOffering = of;
 		addRegistration();
 		if (!theStudent.maximumCourse()) { // if student exceeds course registration limit or current number of student
 											// >= Section Cap
-			System.out.println(st.getStudentName() + " cannot register for " + of.getTheCourse().getCourseName() + " "
-					+ of.getTheCourse().getCourseNum() + ".This student is only allowed have 6 courses at maximum.");
+
 			theStudent.removeMaxCourse(); // Undo addRegistration
 			theOffering.removeMaxOffering();
+			return st.getStudentName() + " cannot register for " + of.getTheCourse().getCourseName() + " "
+					+ of.getTheCourse().getCourseNum() + ".This student is only allowed have 6 courses at maximum.";
 		}
 		if (theOffering.numberOfStudentThisOffering() > theOffering.getSecCap()) {
-			System.out.println("There is currently no available spot in " + of.getTheCourse().getCourseName() + " "
-					+ of.getTheCourse().getCourseNum());
-		}
+			return "There is currently no available spot in " + of.getTheCourse().getCourseName() + " "
+					+ of.getTheCourse().getCourseNum();
+		} else
+			return null;
 	}
 
 	private void addRegistration() {
@@ -35,11 +38,11 @@ public class Registration {
 		this.theStudent = theStudent;
 	}
 
-	public Lecture  getTheOffering() {
+	public Lecture getTheOffering() {
 		return theOffering;
 	}
 
-	public void setTheOffering(Lecture  theOffering) {
+	public void setTheOffering(Lecture theOffering) {
 		this.theOffering = theOffering;
 	}
 

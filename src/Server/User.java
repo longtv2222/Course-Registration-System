@@ -1,24 +1,15 @@
 package Server;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-
-public class User implements Runnable {
+public class User implements Runnable { // Can be either admin or regular student
 	private Application app;
-	private Socket socket;
-	private BufferedReader socketIn;
-	private PrintWriter socketOut;
 
-	public User(Socket socket, Application app) {
-		this.socket = socket;
+	public User(Application app) {
 		this.app = app;
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-
+		app.startApplication();
 	}
 
 }

@@ -19,7 +19,7 @@ public class CourseCatalogue {
 
 	public void createCourseOffering(Course c, int secNum, int secCap) {
 		if (c != null) {
-			Lecture theOffering = new Lecture (secNum, secCap);
+			Lecture theOffering = new Lecture(secNum, secCap);
 			c.addOffering(theOffering);
 		}
 	}
@@ -35,17 +35,17 @@ public class CourseCatalogue {
 		return null;
 	}
 
-	public void coursesTakenByStudents() {
-		System.out.println("Courses taken by students are");
+	public String coursesTakenByStudents() {
+		String s = "Courses taken by students are\n";
 		for (int i = 0; i < courseList.size(); i++) {
 			if (courseList.get(i).checkStudentNumberThisCourse() != 0) {
-				System.out.println(courseList.get(i).getCourseName() + " " + courseList.get(i).getCourseNum());
+				s += courseList.get(i).getCourseName() + " " + courseList.get(i).getCourseNum() + "\n";
 			}
 		}
+		return s;
 	}
 
 	private void displayCourseNotFoundError() {
-		// TODO Auto-generated method stub
 		System.err.println("Course was not found!");
 
 	}
@@ -58,19 +58,18 @@ public class CourseCatalogue {
 		this.courseList = courseList;
 	}
 
-	public void removeCourse(String courseName, int courseID) {
+	public String removeCourse(String courseName, int courseID) {
 		String courseNameUpperCase = courseName.toUpperCase(); // eliminate lower case
 		int index = indexOfName(courseNameUpperCase, courseID);
 		if (index < 0) {
-			System.out.println(courseName + " " + courseID + " is not on the list.");
-			return;
+			return courseName + " " + courseID + " is not on the list.";
 		}
 
 		courseList.remove(index);
-
-		System.out.println(courseNameUpperCase + " " + courseID + " has been removed");
-		System.out.println("The list after removing " + courseNameUpperCase + " " + courseID + " element is:");
-		printAllCourse(); // print course after removing courseName + courseID element
+		String s = courseNameUpperCase + " " + courseID + " has been removed\n";
+		s += "The list after removing " + courseNameUpperCase + " " + courseID + " element is:\n";
+		s += this.toString();
+		return s;
 	}
 
 	private int indexOfName(String courseName, int courseID) {
@@ -84,31 +83,20 @@ public class CourseCatalogue {
 		return index;
 	}
 
-	public void printAllCourse() { // print all current course on the courseList
-		System.out.println();
-		for (int i = 0; i < courseList.size(); i++) {
-			System.out.println(courseList.get(i).getCourseName() + " " + courseList.get(i).getCourseNum());
-		}
-	}
-
-	public void getCourseNameId(String name, int id) {
+	public String getCourseNameId(String name, int id) {
 		int i = 0;
 		for (i = 0; i < courseList.size(); i++) {
 			if (name.equalsIgnoreCase(courseList.get(i).getCourseName()) && courseList.get(i).getCourseNum() == id) {
-				System.out.println(
-						courseList.get(i).getCourseName() + " " + courseList.get(i).getCourseNum() + " is found!");
-				break;
+				return courseList.get(i).getCourseName() + " " + courseList.get(i).getCourseNum() + " is found!";
+
 			}
 		}
 
 		if (i == courseList.size()) {
-			System.out.println(name + " " + id + " is not in the catalogue.");
-		}
+			return name + " " + id + " is not in the catalogue.";
+		} else
+			return null;
 
-	}
-
-	public void displayToString() {
-		System.out.println(toString());
 	}
 
 	@Override
