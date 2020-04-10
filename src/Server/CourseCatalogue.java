@@ -1,4 +1,5 @@
 package Server;
+
 import java.util.ArrayList;
 
 public class CourseCatalogue {
@@ -18,7 +19,7 @@ public class CourseCatalogue {
 
 	public void createCourseOffering(Course c, int secNum, int secCap) {
 		if (c != null) {
-			CourseOffering theOffering = new CourseOffering(secNum, secCap);
+			Lecture theOffering = new Lecture (secNum, secCap);
 			c.addOffering(theOffering);
 		}
 	}

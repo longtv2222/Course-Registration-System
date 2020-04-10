@@ -1,10 +1,10 @@
 package Server;
 public class Registration {
 	private Student theStudent;
-	private CourseOffering theOffering;
+	private Lecture  theOffering;
 	private char grade;
 
-	void completeRegistration(Student st, CourseOffering of) {
+	void completeRegistration(Student st, Lecture  of) {
 
 		theStudent = st;
 		theOffering = of;
@@ -35,11 +35,11 @@ public class Registration {
 		this.theStudent = theStudent;
 	}
 
-	public CourseOffering getTheOffering() {
+	public Lecture  getTheOffering() {
 		return theOffering;
 	}
 
-	public void setTheOffering(CourseOffering theOffering) {
+	public void setTheOffering(Lecture  theOffering) {
 		this.theOffering = theOffering;
 	}
 

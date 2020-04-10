@@ -1,9 +1,10 @@
 package Server;
+
 import java.util.ArrayList;
 
 //This class is simulating a database for our
 //program
-public class DBManager {
+public class DBManager { // This acts as a database for now
 
 	ArrayList<Course> courseList;
 

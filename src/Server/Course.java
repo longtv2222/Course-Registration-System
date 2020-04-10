@@ -6,17 +6,17 @@ public class Course {
 	private String courseName;
 	private int courseNum;
 	private ArrayList<Course> preReq; // List of preReq course for this current course
-	private ArrayList<CourseOffering> offeringList; // Section number,etc for this course
+	private ArrayList<Lecture > offeringList; // Section number,etc for this course
 
 	public Course(String courseName, int courseNum) {
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
 		// Both of the following are only association
 		preReq = new ArrayList<Course>();
-		offeringList = new ArrayList<CourseOffering>();
+		offeringList = new ArrayList<Lecture >();
 	}
 
-	public void addOffering(CourseOffering offering) {
+	public void addOffering(Lecture  offering) {
 		if (offering != null && offering.getTheCourse() == null) {
 			offering.setTheCourse(this);
 			if (!offering.getTheCourse().getCourseName().equals(courseName)
@@ -67,13 +67,13 @@ public class Course {
 		String st = "\n";
 		st += getCourseName() + " " + getCourseNum();
 		st += "\nAll course sections:\n";
-		for (CourseOffering c : offeringList)
+		for (Lecture  c : offeringList)
 			st += c;
 		st += "\n-------\n";
 		return st;
 	}
 
-	public CourseOffering getCourseOfferingAt(int i) {
+	public Lecture  getCourseOfferingAt(int i) {
 		// TODO Auto-generated method stub
 		if (i < 0 || i >= offeringList.size())
 			return null;

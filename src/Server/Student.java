@@ -1,11 +1,11 @@
 package Server;
+
 import java.util.ArrayList;
 
 public class Student {
 
 	private String studentName;
 	private int studentId;
-//	private ArrayList<CourseOffering> offeringList;  //What does this do?
 	private ArrayList<Registration> studentRegList; // Every course this student in
 
 	public Student(String studentName, int studentId) {
@@ -36,7 +36,8 @@ public class Student {
 		return st;
 	}
 
-	public boolean maximumCourse() { // Check to see if this student exceeds 6 courses or not, this function is called in completeRegistration
+	public boolean maximumCourse() { // Check to see if this student exceeds 6 courses or not, this function is
+										// called in completeRegistration
 		if (this.studentRegList.size() > 6)
 			return false;
 		else
