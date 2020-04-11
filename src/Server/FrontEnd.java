@@ -22,7 +22,7 @@ public class FrontEnd {
 	public void communicateWithClient() {
 		while (true) {
 			try {
-				Application app = new Application(serverSocket.accept(), new CourseCatalogue());
+				RegistrationApp app = new RegistrationApp(serverSocket.accept());
 				// By calling new CourseCatalouge(), it loads data from the database to the app.
 				User user = new User(app);
 				threadPool.execute(user);
@@ -33,7 +33,6 @@ public class FrontEnd {
 	}
 
 	public static void main(String[] args) {
-
 		FrontEnd server = new FrontEnd(9098);
 		System.out.println("Server is running...");
 		server.communicateWithClient();

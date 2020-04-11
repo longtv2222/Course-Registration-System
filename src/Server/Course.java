@@ -1,22 +1,31 @@
 package Server;
+
 import java.util.ArrayList;
 
 public class Course {
 
 	private String courseName;
 	private int courseNum;
-	private ArrayList<Course> preReq; // List of preReq course for this current course
-	private ArrayList<Lecture > offeringList; // Section number,etc for this course
+	private ArrayList<Course> preReq;
+	private ArrayList<CourseOffering> offeringList;
 
 	public Course(String courseName, int courseNum) {
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
 		// Both of the following are only association
 		preReq = new ArrayList<Course>();
-		offeringList = new ArrayList<Lecture >();
+		offeringList = new ArrayList<CourseOffering>();
 	}
 
-	public void addOffering(Lecture  offering) {
+	public void addPreReq(Course preReq) {
+		if (preReq != null && preReq.getCourseName().contentEquals(this.courseName)) {
+			System.err.println("Error! Cannot have course be prerequisite for itself!");
+			return;
+		}
+		this.preReq.add(preReq);
+	}
+
+	public void addOffering(CourseOffering offering) {
 		if (offering != null && offering.getTheCourse() == null) {
 			offering.setTheCourse(this);
 			if (!offering.getTheCourse().getCourseName().equals(courseName)
@@ -24,6 +33,7 @@ public class Course {
 				System.err.println("Error! This section belongs to another course!");
 				return;
 			}
+
 			offeringList.add(offering);
 		}
 	}
@@ -44,36 +54,23 @@ public class Course {
 		this.courseNum = courseNum;
 	}
 
-	public int checkStudentNumberThisCourse() {
-		int students = 0;
-		for (int i = 0; i < offeringList.size(); i++) {
-			students += offeringList.get(i).numberOfStudentThisOffering();
-		}
-		return students;
-	}
-
-	public void conditionStudentNumberThisCourse() {
-		int students = checkStudentNumberThisCourse();
-		System.out.println("Total number of student in " + courseName + " " + courseNum + " is " + students + ".");
-		if (students < 8) {
-			System.out.println("Since the number of student in " + courseName + " " + courseNum
-					+ " is smaller than 8, this course cannot be run.");
-		}
-	}
-
-
 	@Override
 	public String toString() {
 		String st = "\n";
 		st += getCourseName() + " " + getCourseNum();
 		st += "\nAll course sections:\n";
-		for (Lecture  c : offeringList)
+		for (CourseOffering c : offeringList)
 			st += c;
+
+		st += "\nAll course prerequisites:\n";
+		for (Course c : preReq)
+			st += "Course: " + c.getCourseName() + " " + c.getCourseNum() + "\n";
+
 		st += "\n-------\n";
 		return st;
 	}
 
-	public Lecture  getCourseOfferingAt(int i) {
+	public CourseOffering getCourseOfferingAt(int i) {
 		// TODO Auto-generated method stub
 		if (i < 0 || i >= offeringList.size())
 			return null;
@@ -81,7 +78,11 @@ public class Course {
 			return offeringList.get(i);
 	}
 
-	public void addPreReq(Course preReq) { // Adding preReq for this course
-		this.preReq.add(preReq);
+	public CourseOffering getCourseOfferingSection(int section) {
+		for (CourseOffering o : this.offeringList)
+			if (o.getSecNum() == section)
+				return o;
+		return null;
 	}
+
 }

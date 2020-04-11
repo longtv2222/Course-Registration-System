@@ -62,6 +62,7 @@ public class Client {
 
 	public static void main(String[] args) {
 		Client aClient = new Client("localhost", 9098);
+		System.out.println("Server is connected!");
 		aClient.communicateServer();
 	}
 

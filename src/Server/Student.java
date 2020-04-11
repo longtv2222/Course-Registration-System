@@ -6,12 +6,21 @@ public class Student {
 
 	private String studentName;
 	private int studentId;
-	private ArrayList<Registration> studentRegList; // Every course this student in
+	// private ArrayList<CourseOffering> offeringList;
+	private ArrayList<Registration> studentRegList;
 
 	public Student(String studentName, int studentId) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
 		studentRegList = new ArrayList<Registration>();
+	}
+
+	public Registration findRegistration(CourseOffering offering) {
+		for (Registration r : studentRegList) {
+			if (r.getTheOffering().equals(offering))
+				return r;
+		}
+		return null;
 	}
 
 	public String getStudentName() {
@@ -36,25 +45,25 @@ public class Student {
 		return st;
 	}
 
-	public boolean maximumCourse() { // Check to see if this student exceeds 6 courses or not, this function is
-										// called in completeRegistration
-		if (this.studentRegList.size() > 6)
-			return false;
-		else
-			return true;
-	}
-
-	public void removeMaxCourse() { // remove when registration failed
-		studentRegList.remove(studentRegList.size() - 1);
-	}
-
-	public ArrayList<Registration> getStudentRegList() {
-		return studentRegList;
-	}
-
 	public void addRegistration(Registration registration) {
-		// TODO Auto-generated method stub
 		studentRegList.add(registration);
+	}
+
+	public void removeRegistration(Registration registration) {
+		studentRegList.remove(registration);
+	}
+
+	public boolean canRegister() {
+		if (this.studentRegList.size() < 6)
+			return true;
+		System.err.println("Error! Student cannot register, no schedual availablility.");
+		return false;
+	}
+
+	public void listRegistered() {
+		for (Registration r : this.studentRegList) {
+			System.out.println(r);
+		}
 	}
 
 }
