@@ -13,8 +13,9 @@ public class User implements Runnable { // Can be either admin or regular studen
 
 	@Override
 	public void run() {
-		GUI a = new GUI(this, this.app);
-		a.start();
+		GUI userInterface = new GUI();
+		userInterface.askNameID(this);
+		app.startup(name, ID);
 	}
 
 	public void setName(String name) {

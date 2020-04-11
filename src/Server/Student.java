@@ -6,7 +6,6 @@ public class Student {
 
 	private String studentName;
 	private int studentId;
-	// private ArrayList<CourseOffering> offeringList;
 	private ArrayList<Registration> studentRegList;
 
 	public Student(String studentName, int studentId) {

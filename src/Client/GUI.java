@@ -2,24 +2,20 @@ package Client;
 
 import Server.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class GUI extends JFrame {
-	private User user;
-	private RegistrationApp app;
 
-	public GUI(User user, RegistrationApp app) {
-		this.user = user;
-		this.app = app;
+	public GUI() {
+		super("Main Window");
+		super.setLayout(new BorderLayout()); // Creating borderLayout for this frame
+		super.setPreferredSize(new Dimension(800, 800));
 	}
 
-	public void start() {
-		this.askNameID();
-		app.startup(user.getName(), user.getID());
-	}
-
-	public void askNameID() { // Creating a dialog box for
+	public void askNameID(User user) { // Creating a dialog box for
 		JTextField nameField = new JTextField(10); // Create text field for name
 		JTextField IDField = new JTextField(10); // Create text field for ID
 
@@ -36,20 +32,19 @@ public class GUI extends JFrame {
 		panel.add(subPanel, BorderLayout.CENTER);
 		panel.add(subPanel2, BorderLayout.SOUTH);
 		setVisible(true);
+
 		int result = JOptionPane.showConfirmDialog(null, panel, "Popup Window", JOptionPane.OK_CANCEL_OPTION);
 		try {
 			if (result == JOptionPane.CANCEL_OPTION) {
 				return;
 			} else if (result == JOptionPane.OK_OPTION) {
-				this.user.setName(nameField.getText());
-				int ID = Integer.parseInt(IDField.getText());
-				this.user.setID(ID);
+				user.setName(nameField.getText());
+				user.setID(Integer.parseInt(IDField.getText()));
 			}
 		} catch (NumberFormatException e) {
 			displayErrorMessage("ID must be a number. Please try again!");
-			this.askNameID();
+			this.askNameID(user);
 		}
-		setVisible(false);
 	}
 
 	private void displayErrorMessage(String message) {

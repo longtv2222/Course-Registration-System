@@ -17,6 +17,7 @@ public class RegistrationApp {
 			this.aSocket = s;
 			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 			socketOut = new PrintWriter(aSocket.getOutputStream(), true);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
