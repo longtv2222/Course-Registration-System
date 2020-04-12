@@ -1,6 +1,8 @@
-package Client;
+package Client.View;
 
 import Server.*;
+import Server.Model.User;
+
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
@@ -8,11 +10,38 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GUI extends JFrame {
+	private JButton searchCourse = new JButton("Search Course");
+	private JButton addCourse = new JButton("Add Course");
+	private JButton removeCourse = new JButton("Remove Course");
+	private JButton displayAll = new JButton("Display All Courses");
+	private JButton courseInCart = new JButton("Course In Cart");
 
 	public GUI() {
 		super("Main Window");
+		setVisible(true);
 		super.setLayout(new BorderLayout()); // Creating borderLayout for this frame
 		super.setPreferredSize(new Dimension(800, 800));
+	}
+
+	public void menu(User a) {
+		setVisible(true);
+		JPanel subPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
+		subPanel.add(searchCourse);
+		subPanel.add(addCourse);
+		subPanel.add(removeCourse);
+		subPanel.add(displayAll);
+		subPanel.add(courseInCart);
+		add(subPanel, BorderLayout.SOUTH);
+
+		JTextArea textArea = new JTextArea();
+		JScrollPane scrollPane = new JScrollPane(textArea);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		JTextArea blankRow = new JTextArea("    ");
+		scrollPane.setRowHeaderView(blankRow);
+		textArea.setEditable(false);
+		add(scrollPane, BorderLayout.CENTER);
+
+		add(new JLabel("<html><br/>Course Registration System<br/><br/>", SwingConstants.CENTER), BorderLayout.NORTH);
 	}
 
 	public void askNameID(User user) { // Creating a dialog box for
@@ -31,7 +60,6 @@ public class GUI extends JFrame {
 
 		panel.add(subPanel, BorderLayout.CENTER);
 		panel.add(subPanel2, BorderLayout.SOUTH);
-		setVisible(true);
 
 		int result = JOptionPane.showConfirmDialog(null, panel, "Popup Window", JOptionPane.OK_CANCEL_OPTION);
 		try {
@@ -50,4 +78,5 @@ public class GUI extends JFrame {
 	private void displayErrorMessage(String message) {
 		JOptionPane.showMessageDialog(null, message, "Error Message", JOptionPane.ERROR_MESSAGE);
 	}
+
 }

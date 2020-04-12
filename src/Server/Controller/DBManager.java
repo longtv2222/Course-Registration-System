@@ -1,6 +1,8 @@
-package Server;
+package Server.Controller;
 
 import java.util.ArrayList;
+
+import Server.Model.Course;
 
 //This class is simulating a database for our
 //program

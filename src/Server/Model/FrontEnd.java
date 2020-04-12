@@ -1,12 +1,14 @@
-package Server;
+package Server.Model;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class FrontEnd {
+import Server.Controller.RegistrationApp;
 
+public class FrontEnd {
 	private ServerSocket serverSocket;
 	private ExecutorService threadPool;
 
@@ -23,7 +25,6 @@ public class FrontEnd {
 		while (true) {
 			try {
 				RegistrationApp app = new RegistrationApp(serverSocket.accept());
-				// By calling new CourseCatalouge(), it loads data from the database to the app.
 				User user = new User(app);
 				threadPool.execute(user);
 			} catch (IOException e) {

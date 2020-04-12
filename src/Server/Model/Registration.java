@@ -1,11 +1,11 @@
-package Server;
+package Server.Model;
 
 public class Registration {
 	private Student theStudent;
 	private CourseOffering theOffering;
 	private char grade;
 
-	void completeRegistration(Student st, CourseOffering of) {
+	public void completeRegistration(Student st, CourseOffering of) {
 		this.setTheStudent(st);
 		this.setTheOffering(of);
 		this.addRegistration();

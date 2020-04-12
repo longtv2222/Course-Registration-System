@@ -1,4 +1,4 @@
-package Client;
+package Client.Controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,10 +7,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client {
-	private PrintWriter socketOut;
 	private Socket aSocket;
-	private BufferedReader stdIn;
+	private BufferedReader stdIn; // For user input
 	private BufferedReader socketIn;
+	private PrintWriter socketOut;
 
 	public Client(String serverName, int port) {
 		try {
@@ -18,6 +18,9 @@ public class Client {
 			stdIn = new BufferedReader(new InputStreamReader(System.in));
 			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 			socketOut = new PrintWriter(aSocket.getOutputStream(), true);
+
+//				socketObjectIn = new ObjectInputStream(aSocket.getInputStream());
+//				socketObjectOut = new ObjectOutputStream(aSocket.getOutputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +60,6 @@ public class Client {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public static void main(String[] args) {

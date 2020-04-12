@@ -1,6 +1,7 @@
-package Server;
+package Server.Model;
 
-import Client.GUI;
+import Client.View.GUI;
+import Server.Controller.RegistrationApp;
 
 public class User implements Runnable { // Can be either admin or regular student
 	private RegistrationApp app;
@@ -15,7 +16,9 @@ public class User implements Runnable { // Can be either admin or regular studen
 	public void run() {
 		GUI userInterface = new GUI();
 		userInterface.askNameID(this);
+		userInterface.menu(this);
 		app.startup(name, ID);
+
 	}
 
 	public void setName(String name) {

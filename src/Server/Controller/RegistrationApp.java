@@ -1,4 +1,4 @@
-package Server;
+package Server.Controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,11 +6,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import Server.Model.*;
 
 public class RegistrationApp {
 	private Socket aSocket;
-	private BufferedReader socketIn;
 	private PrintWriter socketOut;
+	private BufferedReader socketIn;
 
 	public RegistrationApp(Socket s) {
 		try {

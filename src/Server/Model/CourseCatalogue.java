@@ -1,6 +1,8 @@
-package Server;
+package Server.Model;
 
 import java.util.ArrayList;
+
+import Server.Controller.DBManager;
 
 public class CourseCatalogue {
 
