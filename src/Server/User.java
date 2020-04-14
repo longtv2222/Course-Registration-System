@@ -1,6 +1,6 @@
 package Server;
 
-import Client.View.GUI;
+import Client.GUI;
 
 public class User implements Runnable { // Can be either admin or regular student
 	private RegistrationApp app;
