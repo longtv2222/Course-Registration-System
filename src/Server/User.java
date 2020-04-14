@@ -138,6 +138,7 @@ public class User implements Runnable { // Can be either admin or regular studen
 					break;
 				case (1):
 					picked = this.selectCourseOffering();
+				
 					break;// more stuff happens here.
 				case (2):
 					this.registerStudentCourse(st, picked);

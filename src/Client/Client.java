@@ -15,7 +15,7 @@ public class Client {
 	public Client(String serverName, int port) {
 		try {
 			aSocket = new Socket(serverName, port);
-			stdIn = new BufferedReader(new InputStreamReader(System.in));
+			stdIn =  new BufferedReader(new InputStreamReader(System.in));
 			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 			socketOut = new PrintWriter(aSocket.getOutputStream(), true);
 
@@ -26,26 +26,36 @@ public class Client {
 		}
 	}
 
+	public String readServer() throws IOException {
+		String read = "";
+		while (true) {
+			read = socketIn.readLine();
+			if (read.contains("\0")) {
+				read = read.replace("\0", "");
+				return read;
+			}
+
+			if (read.equals("QUIT")) {
+				return "QUIT";
+			}
+			System.out.println(read);
+		}
+	}
+	
+	public void sendServer(String send) {
+		socketOut.println(send);
+	}
+
 	public void communicateServer() {
 		try {
 			while (true) {
-				String read = "";
-				while (true) {
-					read = socketIn.readLine();
-					if (read.contains("\0")) {
-						read = read.replace("\0", "");
-						System.out.println(read);
-						break;
-					}
-
-					if (read.equals("QUIT")) {
-						return;
-					}
-					System.out.println(read);
+				String read = this.readServer();
+				if (read.equals("QUIT")) {
+					return;
 				}
+				System.out.println(read);
 				read = stdIn.readLine();
-				socketOut.println(read);
-				socketOut.flush();
+				this.sendServer(read);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

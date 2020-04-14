@@ -2,9 +2,9 @@ package Client;
 
 import javax.swing.*;
 
-import Server.User;
 
 import java.awt.*;
+//import java.io.BufferedReader;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 7916278598796795258L;
@@ -13,15 +13,17 @@ public class GUI extends JFrame {
 	private JButton removeCourse = new JButton("Remove Course");
 	private JButton displayAll = new JButton("Display All Courses");
 	private JButton courseInCart = new JButton("Course In Cart");
+	private Client client;
 
 	public GUI() {
 		super("Main Window");
+		client = new Client("localhost", 9098);
 		setVisible(true);
 		super.setLayout(new BorderLayout()); // Creating borderLayout for this frame
 		super.setPreferredSize(new Dimension(800, 800));
 	}
 
-	public void menu(User a) {
+	public void menu() {
 		setVisible(true);
 		JPanel subPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
 		subPanel.add(searchCourse);
@@ -42,7 +44,7 @@ public class GUI extends JFrame {
 		add(new JLabel("<html><br/>Course Registration System<br/><br/>", SwingConstants.CENTER), BorderLayout.NORTH);
 	}
 
-	public void askNameID(User user) { // Creating a dialog box for
+	public void askNameID() { // Creating a dialog box for
 		JTextField nameField = new JTextField(10); // Create text field for name
 		JTextField IDField = new JTextField(10); // Create text field for ID
 
@@ -64,12 +66,12 @@ public class GUI extends JFrame {
 			if (result == JOptionPane.CANCEL_OPTION) {
 				return;
 			} else if (result == JOptionPane.OK_OPTION) {
-				user.setName(nameField.getText());
-				user.setID(Integer.parseInt(IDField.getText()));
+				client.sendServer(nameField.getText());
+				client.sendServer(IDField.getText());
 			}
 		} catch (NumberFormatException e) {
 			displayErrorMessage("ID must be a number. Please try again!");
-			this.askNameID(user);
+			this.askNameID();
 		}
 	}
 
@@ -77,4 +79,9 @@ public class GUI extends JFrame {
 		JOptionPane.showMessageDialog(null, message, "Error Message", JOptionPane.ERROR_MESSAGE);
 	}
 
+	public static void main(String[] args) {
+		GUI userInterface = new GUI();
+		userInterface.askNameID();
+		userInterface.menu();
+	}
 }
