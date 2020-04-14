@@ -1,4 +1,4 @@
-package Server;
+package CRS.src.Server;
 
 import java.util.ArrayList;
 
@@ -9,10 +9,7 @@ public class CourseCatalogue {
 	public CourseCatalogue() {
 		loadFromDataBase();
 	}
-	
-	public void addCourse(Course course) {
-		courseList.add(course);
-	}
+
 	private void loadFromDataBase() {
 		// TODO Auto-generated method stub
 		DBManager db = new DBManager();
@@ -37,11 +34,22 @@ public class CourseCatalogue {
 		return null;
 	}
 
+	public String searchCatString(String courseName, int courseNum) { // Same as searchCat but returns string
+		for (Course c : courseList) {
+			if (courseName.equals(c.getCourseName()) && courseNum == c.getCourseNum()) {
+				return c.toString();
+			}
+		}
+
+		return "Could not find the course";
+	}
+
 	// Typically, methods that are called from other methods of the class
 	// are private and are not exposed for use by other classes.
 	// These methods are refereed to as helper methods or utility methods
-	private String displayCourseNotFoundError() {
-		return "Course was not found!";
+	private void displayCourseNotFoundError() {
+		// TODO Auto-generated method stub
+		System.err.println("Course was not found!");
 
 	}
 

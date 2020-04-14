@@ -1,8 +1,8 @@
-package Server;
+package CRS.src.Server;
 
 import java.util.ArrayList;
 
-public class Student implements Comparable<Student> {
+public class Student {
 
 	private String studentName;
 	private int studentId;
@@ -63,11 +63,6 @@ public class Student implements Comparable<Student> {
 		for (Registration r : this.studentRegList) {
 			System.out.println(r);
 		}
-	}
-
-	@Override
-	public int compareTo(Student s) {
-		return this.getStudentId()-s.getStudentId();
 	}
 
 }
