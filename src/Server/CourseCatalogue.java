@@ -9,7 +9,10 @@ public class CourseCatalogue {
 	public CourseCatalogue() {
 		loadFromDataBase();
 	}
-
+	
+	public void addCourse(Course course) {
+		courseList.add(course);
+	}
 	private void loadFromDataBase() {
 		// TODO Auto-generated method stub
 		DBManager db = new DBManager();

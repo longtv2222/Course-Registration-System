@@ -2,7 +2,7 @@ package Server;
 
 import java.util.ArrayList;
 
-public class Student {
+public class Student implements Comparable<Student> {
 
 	private String studentName;
 	private int studentId;
@@ -63,6 +63,11 @@ public class Student {
 		for (Registration r : this.studentRegList) {
 			System.out.println(r);
 		}
+	}
+
+	@Override
+	public int compareTo(Student s) {
+		return this.getStudentId()-s.getStudentId();
 	}
 
 }

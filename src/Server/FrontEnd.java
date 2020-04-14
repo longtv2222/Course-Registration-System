@@ -15,11 +15,13 @@ public class FrontEnd {
 	private PrintWriter socketOut;
 	private BufferedReader socketIn;
 	private ExecutorService threadPool;
+	private Application app;
 
 	public FrontEnd(int port) {
 		try {
 			serverSocket = new ServerSocket(port);
 			threadPool = Executors.newCachedThreadPool();
+			this.app = new Application();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -31,8 +33,12 @@ public class FrontEnd {
 				socket = serverSocket.accept();
 				socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				socketOut = new PrintWriter(socket.getOutputStream(), true);
-				RegistrationApp app = new RegistrationApp(socketIn, socketOut);
-				User user = new User(app);
+				socketOut.println("Please enter the username: \0");
+				String name = socketIn.readLine();
+				socketOut.println("Please enter the user id: \0");
+				String rawId = socketIn.readLine();
+				int id = Integer.parseInt(rawId);
+				User user = new User(this.app, socketIn, socketOut, name, id);
 				threadPool.execute(user);
 			} catch (IOException e) {
 				e.printStackTrace();
