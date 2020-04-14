@@ -1,15 +1,12 @@
 package Client.View;
 
-import Server.*;
 import Server.Model.User;
-
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GUI extends JFrame {
+	private static final long serialVersionUID = 7916278598796795258L;
 	private JButton searchCourse = new JButton("Search Course");
 	private JButton addCourse = new JButton("Add Course");
 	private JButton removeCourse = new JButton("Remove Course");

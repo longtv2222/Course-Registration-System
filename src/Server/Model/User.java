@@ -1,7 +1,6 @@
 package Server.Model;
 
 import Client.View.GUI;
-import Server.Controller.RegistrationApp;
 
 public class User implements Runnable { // Can be either admin or regular student
 	private RegistrationApp app;

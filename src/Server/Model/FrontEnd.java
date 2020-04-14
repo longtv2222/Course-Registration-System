@@ -1,15 +1,19 @@
 package Server.Model;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import Server.Controller.RegistrationApp;
-
 public class FrontEnd {
+	private Socket socket;
 	private ServerSocket serverSocket;
+	private PrintWriter socketOut;
+	private BufferedReader socketIn;
 	private ExecutorService threadPool;
 
 	public FrontEnd(int port) {
@@ -24,7 +28,10 @@ public class FrontEnd {
 	public void communicateWithClient() {
 		while (true) {
 			try {
-				RegistrationApp app = new RegistrationApp(serverSocket.accept());
+				socket = serverSocket.accept();
+				socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				socketOut = new PrintWriter(socket.getOutputStream(), true);
+				RegistrationApp app = new RegistrationApp(socketIn, socketOut);
 				User user = new User(app);
 				threadPool.execute(user);
 			} catch (IOException e) {

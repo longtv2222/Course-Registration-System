@@ -1,32 +1,25 @@
-package Server.Controller;
+package Server.Model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+//import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
+//import java.net.Socket;
 import java.net.SocketException;
-import Server.Model.*;
 
 public class RegistrationApp {
-	private Socket aSocket;
+//	private Socket aSocket;
 	private PrintWriter socketOut;
 	private BufferedReader socketIn;
 
-	public RegistrationApp(Socket s) {
-		try {
-			this.aSocket = s;
-			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-			socketOut = new PrintWriter(aSocket.getOutputStream(), true);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public RegistrationApp(BufferedReader socketIn, PrintWriter socketOut) {
+		this.socketIn = socketIn;
+		this.socketOut = socketOut;
 	}
 
 	private void sendString(String message) {
 		socketOut.println(message);
-		socketOut.flush();
+//		socketOut.flush();
 	}
 
 	private void displayChoices() {
@@ -195,8 +188,8 @@ public class RegistrationApp {
 		reg10.completeRegistration(st10, myCourse.getCourseOfferingAt(0));
 
 		Student user = new Student(name, ID);
-		RegistrationApp regapp = new RegistrationApp(this.aSocket);
-		regapp.menu(user, cat);
+//		RegistrationApp regapp = new RegistrationApp(this.aSocket);
+		this.menu(user, cat);
 	}
 
 }
