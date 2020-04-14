@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import CRS.src.Server.Command;
+
 public class Client {
 	private ObjectInputStream socketIn; // to read from the socket
 	private ObjectOutputStream socketOut; // to write on the socket
