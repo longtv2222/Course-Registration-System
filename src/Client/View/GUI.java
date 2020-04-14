@@ -1,8 +1,9 @@
 package Client.View;
 
-import Server.Model.User;
-
 import javax.swing.*;
+
+import Server.User;
+
 import java.awt.*;
 
 public class GUI extends JFrame {
