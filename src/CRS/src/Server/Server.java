@@ -2,7 +2,6 @@ package CRS.src.Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
@@ -22,14 +21,12 @@ public class Server {
 		try {
 			serverSocket = new ServerSocket(port);
 			while (running) {
-
 				if (!running)
 					break;
 				User user = new User(serverSocket.accept(), this.clients); // Add constructor for this
 				clients.add(user);
 				user.start();
 			}
-
 			serverSocket.close(); // Closing the server.
 			for (int i = 0; i < clients.size(); i++) { // Closing all the thread in this server.
 				clients.get(i).getSocketIn().close();
@@ -45,6 +42,5 @@ public class Server {
 		Server server = new Server(9098);
 		System.out.println("Server is running");
 		server.communicateWithClient();
-
 	}
 }

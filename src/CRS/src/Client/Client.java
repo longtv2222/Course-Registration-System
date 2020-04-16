@@ -28,8 +28,6 @@ public class Client {
 	public void communicateWithServer() {
 		try {
 			socket = new Socket(server, port);
-			String msg = "Connection accepted " + socket.getInetAddress() + ":" + socket.getPort();
-			display(msg);
 			socketIn = new ObjectInputStream(socket.getInputStream());
 			socketOut = new ObjectOutputStream(socket.getOutputStream());
 			new ListenFromServer().start();
@@ -49,21 +47,21 @@ public class Client {
 		try {
 			socketOut.writeObject(msg);
 		} catch (IOException e) {
-			display("Exception writing to server: " + e);
+			e.printStackTrace();
 		}
 	}
 
 	class ListenFromServer extends Thread {
-
 		public void run() {
 			while (true) {
 				try {
 					String msg = (String) socketIn.readObject();
 					cg.append(msg);
 				} catch (IOException e) {
-					display("ERROR: " + e);
+					e.printStackTrace();
 					break;
 				} catch (ClassNotFoundException e2) {
+					e2.printStackTrace();
 					break;
 				}
 			}

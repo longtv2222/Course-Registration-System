@@ -32,74 +32,20 @@ public class User extends Thread {
 		}
 	}
 
-	public void display(String msg) {
-		System.out.println(msg);
-	}
-
 	public void run() {
 		boolean keepGoing = true;
 		while (keepGoing) {
 			try {
 				cm = (Command) socketIn.readObject();
+				this.decodeCommand(cm); // Decode the type of message and call appropriate function
 			} catch (IOException e) {
-				display(username + " Exception reading Streams: " + e);
+				e.printStackTrace();
 				break;
 			} catch (ClassNotFoundException e2) {
 				break;
 			}
-
-			String message = cm.getMessage();
-
-			// Decode the type of message
-			switch (cm.getType()) {
-			// Need to make these thing write into the database smh.
-			case Command.SEARCH_COURSE:
-				String[] data = message.split("SEARCH_COURSE"); // Data for search course is seperated by a space
-				String search = new CourseCatalogue().searchCatString(data[0], Integer.parseInt(data[1]));
-				if (search != null)
-					writeMsg(search.toString());
-				else
-					writeMsg("Course not found!");
-				break;
-			case Command.ADD_COURSE: // Add Course function to be implemeted later as I'm uncertain about sql
-				String[] addCourseData = message.replace("ADD_COURSE", " ").split(" ");
-				System.out.println(addCourseData);
-				Course searchedCourse = new CourseCatalogue().searchCat(addCourseData[0],
-						Integer.parseInt(addCourseData[1]));
-				if (searchedCourse != null) { // addCourseData[0] is course name , 1 is course number, 2 is course
-												// section
-					// I somehow cannot manage to register for student
-					// Null Pointer exception smh
-
-					Registration registration = new Registration();
-					registration.completeRegistration(userStudent,
-							searchedCourse.getCourseOfferingSection(Integer.parseInt(addCourseData[2])));
-
-					writeMsg("Add course successfully");
-				}
-
-				else {
-					writeMsg("Course not found!");
-				}
-				break;
-			case Command.REMOVE_COURSE: // Remove course will be also to be implemented later
-				writeMsg("List of the users connected:");
-				for (int i = 0; i < clients.size(); ++i) {
-					User ct = clients.get(i);
-					writeMsg(ct.getUsername() + " " + ct.getID());
-				}
-				break;
-			case Command.DISPLAY_ALL:
-				writeMsg(new CourseCatalogue().toString()); // Read data from the database through couseCatalogue
-				break;
-			case Command.COURSE_IN_CART:
-				System.out.println("5");
-				break;
-			}
 		}
-		// remove myself from the arrayList containing the list of the
-		// connected Clients
-		clients.remove(this);
+		clients.remove(this); // Remove yourself out of user list and close all sockets.
 		try {
 			socket.close();
 			socketOut.close();
@@ -115,6 +61,64 @@ public class User extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void decodeCommand(Command cm) {
+		switch (cm.getType()) {
+		case Command.SEARCH_COURSE:
+			searchCourse(cm.getMessage());
+			break;
+		case Command.ADD_COURSE:
+			addCourse(cm.getMessage());
+			break;
+		case Command.REMOVE_COURSE:
+			removeCourse(cm.getMessage());
+			break;
+		case Command.DISPLAY_ALL:
+			displayAll(cm.getMessage());
+			break;
+		case Command.COURSE_IN_CART:
+			courseInCart(cm.getMessage());
+			break;
+		}
+	}
+
+	private void courseInCart(String message) { // To be implemented
+
+	}
+
+	private void displayAll(String message) {
+		writeMsg(new CourseCatalogue().toString()); // Read data from the database through couseCatalogue
+	}
+
+	private void removeCourse(String message) { // To be implemented
+
+	}
+
+	private void addCourse(String message) {
+		String[] addCourseData = message.replace("ADD_COURSE", " ").split(" ");
+		System.out.println(addCourseData);
+		Course searchedCourse = new CourseCatalogue().searchCat(addCourseData[0], Integer.parseInt(addCourseData[1]));
+		if (searchedCourse != null) { // addCourseData[0] is course name , 1 is course number, 2 is course
+										// section
+			// I somehow cannot manage to register for student
+			// Null Pointer exception smh
+
+			Registration registration = new Registration();
+			registration.completeRegistration(userStudent,
+					searchedCourse.getCourseOfferingSection(Integer.parseInt(addCourseData[2])));
+
+			writeMsg("Add course successfully");
+		}
+	}
+
+	private void searchCourse(String message) {
+		String[] data = message.split("SEARCH_COURSE"); // Data for search course is seperated by a space
+		String search = new CourseCatalogue().searchCatString(data[0], Integer.parseInt(data[1]));
+		if (search != null)
+			writeMsg(search.toString());
+		else
+			writeMsg("Course not found!");
 	}
 
 	public String getUsername() {
