@@ -14,16 +14,17 @@ public class Server {
 		this.port = port;
 		clients = new ArrayList<User>();
 		this.running = true;
-
 	}
 
 	public void communicateWithClient() {
 		try {
+			CourseCatalogue courseCat = new CourseCatalogue(); // Assumming that this courseCat has been loaded by
+																// DBManager
 			serverSocket = new ServerSocket(port);
 			while (running) {
 				if (!running)
 					break;
-				User user = new User(serverSocket.accept(), this.clients); // Add constructor for this
+				User user = new User(serverSocket.accept(), this.clients, courseCat);
 				clients.add(user);
 				user.start();
 			}

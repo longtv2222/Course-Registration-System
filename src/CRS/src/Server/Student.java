@@ -59,10 +59,12 @@ public class Student {
 		return false;
 	}
 
-	public void listRegistered() {
+	public String listRegistered() {
+		String s = "";
 		for (Registration r : this.studentRegList) {
-			System.out.println(r);
+			s += r + "\n";
 		}
+		return s;
 	}
 
 }

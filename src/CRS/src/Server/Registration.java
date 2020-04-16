@@ -5,18 +5,19 @@ public class Registration {
 	private CourseOffering theOffering;
 	private char grade;
 
-	public void completeRegistration(Student st, CourseOffering of) {
+	public String completeRegistration(Student st, CourseOffering of) {
 		this.setTheStudent(st);
 		this.setTheOffering(of);
-		this.addRegistration();
+		return this.addRegistration();
 	}
 
-	private void addRegistration() {
+	private String addRegistration() {
 		if (theOffering.canRegister() && theStudent.canRegister()) {
 			theStudent.addRegistration(this);
 			theOffering.addRegistration(this);
+			return "Add course successfully!";
 		} else
-			System.out.println("Error! Cannot register for class!");
+			return "Error! Cannot register for class!";
 	}
 
 	public void removeRegistration() {

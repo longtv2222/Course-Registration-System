@@ -21,10 +21,11 @@ public class ClientGUI extends JFrame {
 	private Client client;
 	private String host;
 	private int port;
-	private JTextArea textArea = new JTextArea();
+	private JTextArea textArea = new JTextArea(5, 10);
 
 	public ClientGUI(String host, int port) {
 		super("Main Window");
+		textArea.setFont(new Font("Serif", Font.PLAIN, 14)); // Setting Font and Size for text Area
 		searchCourse.setEnabled(false); // Disable buttons
 		addCourse.setEnabled(false);
 		removeCourse.setEnabled(false);
@@ -34,7 +35,7 @@ public class ClientGUI extends JFrame {
 		this.port = port;
 		this.menu(); // Display the menu
 		pack();
-		this.searchCourseButton(); // Adding action to button
+		this.searchCourseButton(); // Adding action to buttons
 		this.addCourseButton();
 		this.removeCourseButton();
 		this.displayAllButton();
@@ -43,12 +44,8 @@ public class ClientGUI extends JFrame {
 		setVisible(true);
 	}
 
-	public ClientGUI() {
-		this.menu();
-		setVisible(true);
-	}
-
 	public void append(String str) { // Make a string to display on textArea
+		textArea.setText("");
 		textArea.append(str);
 		textArea.setCaretPosition(textArea.getText().length() - 1);
 	}
@@ -82,7 +79,6 @@ public class ClientGUI extends JFrame {
 	private void signInButton() {
 		signIn.addActionListener((ActionEvent e) -> { // Done
 			try {
-
 				String name = userName.getText();
 				String userID = ID.getText();
 				signIn.setEnabled(false); // Disable sign in button
@@ -114,8 +110,8 @@ public class ClientGUI extends JFrame {
 			JTextField courseName = new JTextField(10); // Create text field for name
 			JTextField courseNumber = new JTextField(10); // Create text field for ID
 			searchCourseDialogue(courseName, courseNumber);
-			System.out.println(courseName);
-			System.out.println(courseNumber);
+			if (courseName.getText().equals("") || courseNumber.getText().equals(""))
+				return;
 			client.sendMessage(new Command(Command.SEARCH_COURSE,
 					courseName.getText() + "SEARCH_COURSE" + courseNumber.getText()));
 		});
@@ -126,7 +122,7 @@ public class ClientGUI extends JFrame {
 			JTextField courseName = new JTextField(10); // Create text field for name
 			JTextField courseNumber = new JTextField(10); // Create text field for ID
 			JTextField courseSection = new JTextField(10); // Create text field for course Section
-			this.addCourseDialogue(courseName, courseNumber, courseSection);
+			this.courseDialogue(courseName, courseNumber, courseSection);
 			client.sendMessage(new Command(Command.ADD_COURSE, courseName.getText() + "ADD_COURSE"
 					+ courseNumber.getText() + "ADD_COURSE" + courseSection.getText()));
 		});
@@ -134,7 +130,12 @@ public class ClientGUI extends JFrame {
 
 	private void removeCourseButton() {
 		removeCourse.addActionListener((ActionEvent e) -> { // Adding action to removeCourse
-			client.sendMessage(new Command(Command.REMOVE_COURSE, " "));
+			JTextField courseName = new JTextField(10); // Create text field for name
+			JTextField courseNumber = new JTextField(10); // Create text field for ID
+			JTextField courseSection = new JTextField(10); // Create text field for course Section
+			this.courseDialogue(courseName, courseNumber, courseSection);
+			client.sendMessage(new Command(Command.REMOVE_COURSE, courseName.getText() + "REMOVE_COURSE"
+					+ courseNumber.getText() + "REMOVE_COURSE" + courseSection.getText()));
 		});
 	}
 
@@ -180,7 +181,7 @@ public class ClientGUI extends JFrame {
 		}
 	}
 
-	public void addCourseDialogue(JTextField courseName, JTextField courseNumber, JTextField courseSection) {
+	public void courseDialogue(JTextField courseName, JTextField courseNumber, JTextField courseSection) {
 		JPanel panel = new JPanel(new BorderLayout());
 
 		JPanel subPanel = new JPanel(new BorderLayout()); // subPanel for Center
@@ -211,7 +212,7 @@ public class ClientGUI extends JFrame {
 			}
 		} catch (NumberFormatException e) {
 			displayErrorMessage("ID must be a number. Please try again!");
-			this.addCourseDialogue(courseName, courseNumber, courseSection);
+			this.courseDialogue(courseName, courseNumber, courseSection);
 		}
 	}
 

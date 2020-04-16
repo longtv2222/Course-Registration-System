@@ -35,7 +35,6 @@ public class Client {
 			socketOut.writeObject(ID);
 		} catch (IOException e) {
 			e.printStackTrace();
-
 		}
 	}
 
@@ -58,10 +57,8 @@ public class Client {
 					String msg = (String) socketIn.readObject();
 					cg.append(msg);
 				} catch (IOException e) {
-					e.printStackTrace();
 					break;
 				} catch (ClassNotFoundException e2) {
-					e2.printStackTrace();
 					break;
 				}
 			}

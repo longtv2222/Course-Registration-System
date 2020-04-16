@@ -12,19 +12,22 @@ public class User extends Thread {
 	private Socket socket;
 	private String username;
 	private Integer ID;
-	private Command cm;
 	private ArrayList<User> clients;
-	private Student userStudent;
+	private CourseCatalogue courseCat; // Agreggation relationship with courseCat.
 
-	public User(Socket socket, ArrayList<User> clients) {
+	private Student st; // Assuming that the user is student. Might make another 2 classes named student
+						// and admin that inherit from user.
+
+	public User(Socket socket, ArrayList<User> clients, CourseCatalogue courseCat) {
 		try {
 			this.socket = socket;
 			socketOut = new ObjectOutputStream(socket.getOutputStream());
 			socketIn = new ObjectInputStream(socket.getInputStream());
-			username = (String) socketIn.readObject(); // Read username how??
-			ID = (Integer) socketIn.readObject(); // Read ID how??
+			username = (String) socketIn.readObject(); // Read username
+			ID = (Integer) socketIn.readObject(); // Read ID
 			this.clients = clients;
-			userStudent = new Student(username, ID); // Assume the fact that this user is a student.
+			this.courseCat = courseCat;
+			st = new Student(username, ID);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -36,11 +39,11 @@ public class User extends Thread {
 		boolean keepGoing = true;
 		while (keepGoing) {
 			try {
-				cm = (Command) socketIn.readObject();
+				Command cm = (Command) socketIn.readObject();
 				this.decodeCommand(cm); // Decode the type of message and call appropriate function
 			} catch (IOException e) {
-				e.printStackTrace();
-				break;
+				keepGoing = false;
+				System.out.println(username + " has disconnected");
 			} catch (ClassNotFoundException e2) {
 				break;
 			}
@@ -83,50 +86,61 @@ public class User extends Thread {
 		}
 	}
 
-	private void courseInCart(String message) { // To be implemented
-
+	private void courseInCart(String message) {
+		writeMsg(st.listRegistered());
 	}
 
 	private void displayAll(String message) {
-		writeMsg(new CourseCatalogue().toString()); // Read data from the database through couseCatalogue
+		writeMsg(courseCat.toString()); // Read data from the database through couseCatalogue
 	}
 
 	private void removeCourse(String message) { // To be implemented
-
+		try {
+			String[] removeCourseData = message.replace("REMOVE_COURSE", " ").split(" ");
+			// removeCourseData[0] is course name , 1 is course number, 2 is course SECTION
+			Course searchedCourse = courseCat.searchCat(removeCourseData[0], Integer.parseInt(removeCourseData[1]));
+			if (searchedCourse.equals(null)) {
+				writeMsg("The course you want to remove does not exist!");
+			} else {
+				CourseOffering course = searchedCourse.getCourseOfferingSection(Integer.parseInt(removeCourseData[2]));
+				Registration reg = st.findRegistration(course);
+				if (!reg.equals(null)) {
+					writeMsg("You have been removed from the selected course offering.");
+					reg.removeRegistration();
+				} else {
+					writeMsg("Error! Student is not in the selected course offering.");
+				}
+			}
+		} catch (NullPointerException e) {
+			writeMsg("Error! You are not in the selected course offering.");
+		}
 	}
 
 	private void addCourse(String message) {
-		String[] addCourseData = message.replace("ADD_COURSE", " ").split(" ");
-		System.out.println(addCourseData);
-		Course searchedCourse = new CourseCatalogue().searchCat(addCourseData[0], Integer.parseInt(addCourseData[1]));
-		if (searchedCourse != null) { // addCourseData[0] is course name , 1 is course number, 2 is course
-										// section
-			// I somehow cannot manage to register for student
-			// Null Pointer exception smh
-
-			Registration registration = new Registration();
-			registration.completeRegistration(userStudent,
-					searchedCourse.getCourseOfferingSection(Integer.parseInt(addCourseData[2])));
-
-			writeMsg("Add course successfully");
+		try {
+			String[] addCourseData = message.replace("ADD_COURSE", " ").split(" ");
+			// addCourseData[0] is course name , 1 is course number, 2 is course SECTION
+			Course searchedCourse = courseCat.searchCat(addCourseData[0], Integer.parseInt(addCourseData[1]));
+			if (searchedCourse.equals(null)) {
+				writeMsg("The course you want to add does not exist!");
+			} else {
+				Registration registration = new Registration();
+				writeMsg(registration.completeRegistration(st,
+						searchedCourse.getCourseOfferingSection(Integer.parseInt(addCourseData[2]))));
+			}
+		} catch (NullPointerException e) {
+			writeMsg("The course you want to add does not exist!");
 		}
 	}
 
 	private void searchCourse(String message) {
-		String[] data = message.split("SEARCH_COURSE"); // Data for search course is seperated by a space
-		String search = new CourseCatalogue().searchCatString(data[0], Integer.parseInt(data[1]));
-		if (search != null)
+		try {
+			String[] data = message.split("SEARCH_COURSE"); // Data for search course is seperated by a space
+			Course search = courseCat.searchCat(data[0], Integer.parseInt(data[1]));
 			writeMsg(search.toString());
-		else
-			writeMsg("Course not found!");
-	}
-
-	public String getUsername() {
-		return this.username;
-	}
-
-	public Integer getID() {
-		return this.ID;
+		} catch (NullPointerException e) {
+			writeMsg("The course you searched for does not exist.");
+		}
 	}
 
 	public ObjectInputStream getSocketIn() {
