@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class User extends Thread {
+public class User implements Runnable {
 	private ObjectInputStream socketIn;
 	private ObjectOutputStream socketOut;
 	private Socket socket;
@@ -66,7 +66,7 @@ public class User extends Thread {
 		}
 	}
 
-	public void decodeCommand(Command cm) {
+	private void decodeCommand(Command cm) {
 		switch (cm.getType()) {
 		case Command.SEARCH_COURSE:
 			searchCourse(cm.getMessage());
@@ -87,7 +87,10 @@ public class User extends Thread {
 	}
 
 	private void courseInCart(String message) {
-		writeMsg(st.listRegistered());
+		if (!st.getStudentRegList().equals(null))
+			writeMsg(st.listRegistered());
+		else
+			writeMsg("You have no course in your cart rightnow.");
 	}
 
 	private void displayAll(String message) {

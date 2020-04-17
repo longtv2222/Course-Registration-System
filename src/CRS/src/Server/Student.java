@@ -67,4 +67,8 @@ public class Student {
 		return s;
 	}
 
+	public ArrayList<Registration> getStudentRegList() {
+		return this.studentRegList;
+	}
+
 }

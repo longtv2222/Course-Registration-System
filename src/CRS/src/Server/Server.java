@@ -3,17 +3,21 @@ package CRS.src.Server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 	private ServerSocket serverSocket;
 	private ArrayList<User> clients; // Manage list of clients
 	private int port;
 	private boolean running;
+	private ExecutorService pool;
 
 	public Server(int port) {
 		this.port = port;
 		clients = new ArrayList<User>();
 		this.running = true;
+		pool = Executors.newCachedThreadPool();
 	}
 
 	public void communicateWithClient() {
@@ -25,8 +29,7 @@ public class Server {
 				if (!running)
 					break;
 				User user = new User(serverSocket.accept(), this.clients, courseCat);
-				clients.add(user);
-				user.start();
+				pool.execute(user);
 			}
 			serverSocket.close(); // Closing the server.
 			for (int i = 0; i < clients.size(); i++) { // Closing all the thread in this server.
