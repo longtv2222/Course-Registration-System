@@ -15,9 +15,10 @@ public class Registration {
 		if (theOffering.canRegister() && theStudent.canRegister()) {
 			theStudent.addRegistration(this);
 			theOffering.addRegistration(this);
-			return "Add course successfully!";
+			return theOffering.getTheCourse().getCourseName() + " " + theOffering.getTheCourse().getCourseNum()
+					+ " section " + theOffering.getSecNum() + " has been added to your cart.";
 		} else
-			return "Error! Cannot register for class!";
+			return "ERROR Cannot register for class!";
 	}
 
 	public void removeRegistration() {

@@ -60,7 +60,11 @@ public class Client implements Runnable {
 		while (running) {
 			try {
 				String msg = (String) socketIn.readObject();
-				cg.append(msg + " "); // Not sure where this error comes from. Might need to address it later.
+				if (msg.contains("ERROR")) {
+					String errorMessage = msg.replace("ERROR", "");
+					cg.displayErrorMessage(errorMessage); // Display error message.
+				} else
+					cg.append(msg); // Normal message
 			} catch (IOException e) {
 				break;
 			} catch (ClassNotFoundException e2) {

@@ -10,6 +10,7 @@ public class Command implements Serializable {
 	public static final int REMOVE_COURSE = 2;
 	public static final int DISPLAY_ALL = 3;
 	public static final int COURSE_IN_CART = 4;
+	public static final int CREATE_NEW_COURSE = 5;
 
 	private int type;
 	private String message;
