@@ -1,4 +1,4 @@
-package CRS.src.Server;
+package src.Server;
 
 import java.io.Serializable;
 

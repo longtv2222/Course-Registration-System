@@ -1,9 +1,7 @@
-package CRS.src.Client;
+package src.Client;
 
 import javax.swing.*;
-
-import CRS.src.Server.Command;
-
+import src.Server.Command;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 

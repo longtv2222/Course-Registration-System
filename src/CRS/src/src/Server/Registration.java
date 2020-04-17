@@ -1,4 +1,4 @@
-package CRS.src.Server;
+package src.Server;
 
 public class Registration {
 	private Student theStudent;

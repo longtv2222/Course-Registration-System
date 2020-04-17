@@ -1,4 +1,4 @@
-package CRS.src.Client;
+package src.Client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import CRS.src.Server.Command;
+import src.Server.Command;
 
 public class Client implements Runnable {
 	private ObjectInputStream socketIn; // to read from the socket
