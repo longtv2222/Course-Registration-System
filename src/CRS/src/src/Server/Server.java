@@ -15,14 +15,14 @@ public class Server {
 
 	public Server(int port) {
 		this.port = port;
-		clients = new ArrayList<User>();
+		this.clients = new ArrayList<User>();
 		this.running = true;
-		pool = Executors.newCachedThreadPool();
+		this.pool = Executors.newCachedThreadPool();
 	}
 
 	public void communicateWithClient() {
 		try {
-			CourseCatalogue courseCat = new CourseCatalogue(); // Assumming that this courseCat has been loaded by
+			CourseCatalogue courseCat = new CourseCatalogue(); // Asumming that this courseCat has been loaded by
 																// DBManager
 			serverSocket = new ServerSocket(port);
 			while (running) {

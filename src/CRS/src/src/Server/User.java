@@ -16,6 +16,7 @@ public class User implements Runnable {
 	private CourseCatalogue courseCat; // Agreggation relationship with courseCat.
 	private Student st; // Assuming that the user is student. Might make another 2 classes named student
 						// and admin that inherit from user.
+	private boolean running;
 
 	public User(Socket socket, ArrayList<User> clients, CourseCatalogue courseCat) {
 		try {
@@ -35,13 +36,13 @@ public class User implements Runnable {
 	}
 
 	public void run() {
-		boolean keepGoing = true;
-		while (keepGoing) {
+		running = true;
+		while (running) {
 			try {
 				Command cm = (Command) socketIn.readObject();
 				this.decodeCommand(cm); // Decode the type of message and call appropriate function
 			} catch (IOException e) {
-				keepGoing = false;
+				running = false;
 				System.out.println(username + " has disconnected");
 			} catch (ClassNotFoundException e2) {
 				break;
@@ -90,7 +91,20 @@ public class User implements Runnable {
 		case Command.COURSE_IN_CART:
 			courseInCart(cm.getMessage());
 			break;
+		case Command.CREATE_NEW_COURSE:
+			createNewCourse(cm.getMessage());
+			break;
+		case Command.DELETE_A_COURSE:
+			deleteCourse(cm.getMessage());
 		}
+	}
+
+	private void deleteCourse(String message) { // To be implemented
+
+	}
+
+	private void createNewCourse(String message) { // To be implemented
+
 	}
 
 	private void courseInCart(String message) {

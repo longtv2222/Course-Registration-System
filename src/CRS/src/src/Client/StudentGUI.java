@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -21,8 +22,6 @@ public class StudentGUI extends ClientGUI {
 	private JButton displayAll = new JButton("Display All Courses");
 	private JButton courseInCart = new JButton("Course In Cart");
 	private JButton signIn = new JButton("Sign in");
-	private JTextField userName = new JTextField(10);
-	private JTextField ID = new JTextField(10);
 
 	public StudentGUI(String host, int port) {
 		super(host, port);
@@ -58,7 +57,6 @@ public class StudentGUI extends ClientGUI {
 		add(scrollPane, BorderLayout.CENTER);
 
 		JPanel subPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
-
 		subPanel1.add(new JLabel("USERNAME: "));
 		subPanel1.add(userName);
 		subPanel1.add(new JLabel("ID: "));
@@ -81,7 +79,7 @@ public class StudentGUI extends ClientGUI {
 				client = new Client(host, port, name, Integer.parseInt(userID), this);
 
 				client.communicateWithServer();
-				System.out.println("Client connected");
+				System.out.println("Student connected");
 				searchCourse.setEnabled(true);
 				// Enable button
 				addCourse.setEnabled(true);

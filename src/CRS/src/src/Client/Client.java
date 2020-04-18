@@ -71,11 +71,11 @@ public class Client implements Runnable {
 				break;
 			}
 		}
-		this.closeSocket();
 	}
 
 	public void closeSocket() {
 		try {
+			running = false;
 			socket.close();
 			socketIn.close();
 			socketOut.close();

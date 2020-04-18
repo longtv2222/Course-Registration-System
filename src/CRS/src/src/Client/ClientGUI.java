@@ -1,6 +1,8 @@
 package src.Client;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.*;
 
@@ -10,8 +12,11 @@ public class ClientGUI extends JFrame {
 	protected int port;
 	protected JTextArea textArea = new JTextArea(5, 10);
 	protected Client client;
+	protected JTextField userName = new JTextField(10);
+	protected JTextField ID = new JTextField(10);
 
 	public ClientGUI(String host, int port) {
+		super("Main Window");
 		this.host = host;
 		this.port = port;
 	}
@@ -25,7 +30,7 @@ public class ClientGUI extends JFrame {
 				0, JOptionPane.INFORMATION_MESSAGE, null, options, null);
 		if (option == JOptionPane.YES_OPTION) // Yes option is admin.
 			new adminGUI(host, port);
-		else
+		if (option == JOptionPane.CANCEL_OPTION)
 			new StudentGUI(host, port);
 	}
 
