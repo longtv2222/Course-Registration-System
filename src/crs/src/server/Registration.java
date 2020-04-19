@@ -2,28 +2,28 @@ package crs.src.server;
 
 public class Registration {
 	private Student theStudent;
-	private Lecture theOffering;
+	private Lecture theLecture;
 	private char grade;
 
 	public String completeRegistration(Student st, Lecture of) {
 		this.setTheStudent(st);
-		this.setTheOffering(of);
+		this.setTheLecture(of);
 		return this.addRegistration();
 	}
 
 	private String addRegistration() {
-		if (theOffering.canRegister() && theStudent.canRegister()) {
+		if (theLecture.canRegister() && theStudent.canRegister(theLecture.getTheCourse())) {
 			theStudent.addRegistration(this);
-			theOffering.addRegistration(this);
-			return theOffering.getTheCourse().getCourseName() + " " + theOffering.getTheCourse().getCourseNum()
-					+ " section " + theOffering.getSecNum() + " has been added to your cart.";
+			theLecture.addRegistration(this);
+			return theLecture.getTheCourse().getCourseName() + " " + theLecture.getTheCourse().getCourseNum()
+					+ " section " + theLecture.getSecNum() + " has been added to your cart.";
 		} else
 			return "ERROR Cannot register for class!";
 	}
 
 	public void removeRegistration() {
 		theStudent.removeRegistration(this);
-		theOffering.removeRegistration(this);
+		theLecture.removeRegistration(this);
 	}
 
 	public Student getTheStudent() {
@@ -34,12 +34,12 @@ public class Registration {
 		this.theStudent = theStudent;
 	}
 
-	public Lecture getTheOffering() {
-		return theOffering;
+	public Lecture getTheLecture() {
+		return theLecture;
 	}
 
-	public void setTheOffering(Lecture theOffering) {
-		this.theOffering = theOffering;
+	public void setTheLecture(Lecture theLecture) {
+		this.theLecture = theLecture;
 	}
 
 	public char getGrade() {
@@ -54,7 +54,7 @@ public class Registration {
 	public String toString() {
 		String st = "\n";
 		st += "Student Name: " + getTheStudent() + "\n";
-		st += "The Offering: " + getTheOffering() + "\n";
+		st += "The Lecture: " + getTheLecture() + "\n";
 		st += "Grade: " + getGrade();
 		st += "\n-----------\n";
 		return st;

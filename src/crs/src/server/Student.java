@@ -7,6 +7,7 @@ public class Student {
 	private String studentName;
 	private int studentId;
 	private ArrayList<Registration> studentRegList;
+	private ArrayList<Course> studentTakenList;
 
 	public Student(String studentName, int studentId) {
 		this.setStudentName(studentName);
@@ -16,8 +17,16 @@ public class Student {
 
 	public Registration findRegistration(Lecture offering) {
 		for (Registration r : studentRegList) {
-			if (r.getTheOffering().equals(offering))
+			if (r.getTheLecture().equals(offering))
 				return r;
+		}
+		return null;
+	}
+
+	public Course findTaken(Course course) {
+		for (Course c : studentTakenList) {
+			if (c.equals(course))
+				return c;
 		}
 		return null;
 	}
@@ -52,11 +61,30 @@ public class Student {
 		studentRegList.remove(registration);
 	}
 
-	public boolean canRegister() {
-		if (this.studentRegList.size() < 6)
-			return true;
-		System.err.println("Error! Student cannot register, no schedual availablility.");
-		return false;
+	public boolean canRegister(Course course) {
+		if (this.studentRegList.size() >= 6) {
+			System.err.println("Error! Student cannot register, no schedual availablility.");
+			return false;
+		}
+		if (!this.studentTakenList.containsAll(course.getPreReqs())) {
+			System.err.println("Error! Student cannot register, has not taken all prereqs!.");
+			return false;
+		}
+		for(Course sr : (course.getSubReqs())) {
+			if(this.studentTakenList.contains(sr)==false) {
+				boolean contains = false;
+				for(Registration r : this.studentRegList) {
+					if(sr.equals(r.getTheLecture().getTheCourse())) {
+						contains = true;
+					}
+				}
+				if(!contains) {
+					System.err.println("Errorr! Student cannot register, has not taken or is not taking all subreqs!");
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public String listRegistered() {
