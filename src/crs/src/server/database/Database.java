@@ -26,6 +26,11 @@ public class Database {
 				reg.getTheLecture().getSecNum());
 	}
 
+	public void removeRegistration(Registration reg) throws SQLException{
+		sqlServer.removeRegistration(reg.getTheLecture().getTheCourse().getCourseName(),
+				reg.getTheLecture().getTheCourse().getCourseNum(), reg.getTheStudent().getStudentId(),
+				reg.getTheLecture().getSecNum());
+	}
 	public void addStudent(Student student) throws SQLException {
 		sqlServer.addStudent(student.getStudentId(), student.getStudentName());
 	}
@@ -69,6 +74,9 @@ public class Database {
 		}
 	}
 
+	public void close() {
+		sqlServer.close();
+	}
 	public static void main(String[] args) throws SQLException {
 		Database db = new Database("jdbc:mysql://localhost:3306/", "school_long_cloud", "mysql", "");
 		ArrayList<Student> students = db.getAllStudents();

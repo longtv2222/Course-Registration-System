@@ -52,12 +52,6 @@ public class Student {
 		this.studentId = studentId;
 	}
 
-	@Override
-	public String toString() {
-		String st = "Student Name: " + getStudentName() + "\n" + "Student Id: " + getStudentId() + "\n\n";
-		return st;
-	}
-
 	public void addRegistration(Registration registration) {
 		studentRegList.add(registration);
 	}
@@ -96,6 +90,19 @@ public class Student {
 			s += c.getCourseName() + " " + c.getCourseNum() + "\n";
 		}
 		return s;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder("Student Name: ");
+		s.append(getStudentName());
+		s.append("\nStudent Id: ");
+		s.append(getStudentId());
+//		s.append("\nCourses student is registered for: \n");
+//		s.append(listRegistered());
+//		s.append("\nCourses student has taken: \n");
+//		s.append(listTaken());
+		return s.toString();
 	}
 
 	public ArrayList<Registration> getStudentRegList() {

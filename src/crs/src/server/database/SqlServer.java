@@ -220,6 +220,12 @@ public class SqlServer {
 		statement.close();
 	}
 
+	public void removeRegistration(String course, int courseNum, int studentId, int lectureId) throws SQLException {
+		Statement statement = con.createStatement();
+		statement.executeUpdate("DELETE FROM `registrations` WHERE (`student_id` = '" + studentId
+				+ "') AND (`course` = '"+ course.toUpperCase() + courseNum + "') AND (`lecture_id` = '"+ lectureId + "')");
+		statement.close();
+	}
 	public ArrayList<Student> getStudents() throws SQLException {
 		ArrayList<Student> students = new ArrayList<Student>();
 		Statement statement = con.createStatement();
@@ -305,6 +311,14 @@ public class SqlServer {
 		}
 	}
 
+	public void close() {
+		try {
+			this.con.close();
+		} catch (SQLException e) {
+			System.err.println("Error! Something went wrong with closing the SQL server connection.");
+			e.printStackTrace();
+		}
+	}
 //	public static void main(String[] args) {
 //		System.out.println("Debugging Sql Server.");
 //		try {
@@ -324,6 +338,7 @@ public class SqlServer {
 //				System.out.println(s.listRegistered());
 //				System.out.println(s.listTaken());
 //			}
+//			serv.removeRegistration("ENGG", 233, 2, 0);
 //		} catch (SQLException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();

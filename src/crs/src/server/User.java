@@ -15,12 +15,12 @@ public class User implements Runnable {
 	private String username;
 	private Integer ID;
 	private ArrayList<User> clients;
-	private CourseCatalogue courseCat; // Agreggation relationship with courseCat.
+	private Application app; // Agreggation relationship with courseCat.
 	private Student st; // Assuming that the user is student. Might make another 2 classes named student
 						// and admin that inherit from user.
 	private boolean running;
 
-	public User(Socket socket, ArrayList<User> clients, CourseCatalogue courseCat) {
+	public User(Socket socket, ArrayList<User> clients, Application app) {
 		try {
 			this.socket = socket;
 			socketOut = new ObjectOutputStream(socket.getOutputStream());
@@ -28,8 +28,9 @@ public class User implements Runnable {
 			username = (String) socketIn.readObject(); // Read username
 			ID = (Integer) socketIn.readObject(); // Read ID
 			this.clients = clients;
-			this.courseCat = courseCat;
-			st = new Student(username, ID);
+			this.app = app;
+			// perhaps make it a new command if the server loads the student properly, otherwise re-request input from the client...
+			st = app.loadStudent(username, ID);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -38,7 +39,8 @@ public class User implements Runnable {
 	}
 
 	public void run() {
-		running = true;
+		running = (st != null);
+		// if we have no user, we have no program!
 		while (running) {
 			try {
 				Command cm = (Command) socketIn.readObject();
@@ -117,13 +119,13 @@ public class User implements Runnable {
 	}
 
 	private void displayAll(String message) {
-		writeMsg(courseCat.toString()); // Read data from the database through couseCatalogue
+		writeMsg(app.toString()); // Read data from the database through couseCatalogue
 	}
 
 	private void removeCourse(String message) { // To be implemented
 		String[] removeCourseData = message.replace("REMOVE_COURSE", " ").split(" ");
 		// removeCourseData[0] is course name , 1 is course number, 2 is course SECTION
-		Course searchedCourse = courseCat.searchCat(removeCourseData[0], Integer.parseInt(removeCourseData[1]));
+		Course searchedCourse = app.searchCourses(removeCourseData[0], Integer.parseInt(removeCourseData[1]));
 		if (searchedCourse == null) {
 			writeErrorMsg("The course you want to remove does not exist in the system.");
 		} else {
@@ -131,7 +133,7 @@ public class User implements Runnable {
 			Registration reg = st.findRegistration(course);
 			if (reg != null) {
 				writeMsg("You have been removed from the selected course offering.");
-				reg.removeRegistration();
+				app.removeRegistration(reg);
 			} else {
 				writeErrorMsg(
 						"You are not in" + removeCourseData[0] + " " + removeCourseData[1] + " " + removeCourseData[2]);
@@ -143,12 +145,11 @@ public class User implements Runnable {
 		try {
 			String[] addCourseData = message.split("ADD_COURSE");
 			// addCourseData[0] is course name , 1 is course number, 2 is course SECTION
-			Course searchedCourse = courseCat.searchCat(addCourseData[0], Integer.parseInt(addCourseData[1]));
+			Course searchedCourse = app.searchCourses(addCourseData[0], Integer.parseInt(addCourseData[1]));
 			if (searchedCourse.equals(null)) {
 				writeErrorMsg("The course you want to add does not exist!");
 			} else {
-				Registration registration = new Registration();
-				writeMsg(registration.completeRegistration(st,
+				writeMsg(app.registerStudentCourse(st,
 						searchedCourse.getLectureSection(Integer.parseInt(addCourseData[2]))));
 			}
 		} catch (NullPointerException e) {
@@ -159,7 +160,7 @@ public class User implements Runnable {
 	private void searchCourse(String message) {
 		try {
 			String[] data = message.split("SEARCH_COURSE"); // Data for search course is seperated by a space
-			Course search = courseCat.searchCat(data[0], Integer.parseInt(data[1]));
+			Course search = app.searchCourses(data[0], Integer.parseInt(data[1]));
 			writeMsg(search.toString());
 		} catch (NullPointerException e) {
 			writeErrorMsg("The course you searched for does not exist.");

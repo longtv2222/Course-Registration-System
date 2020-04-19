@@ -22,13 +22,13 @@ public class Server {
 
 	public void communicateWithClient() {
 		try {
-			CourseCatalogue courseCat = new CourseCatalogue(); // Asumming that this courseCat has been loaded by
+			Application app = new Application(); // Asumming that this courseCat has been loaded by
 																// DBManager
 			serverSocket = new ServerSocket(port);
 			while (running) {
 				if (!running)
 					break;
-				User user = new User(serverSocket.accept(), this.clients, courseCat);
+				User user = new User(serverSocket.accept(), this.clients, app);
 				pool.execute(user);
 			}
 			serverSocket.close(); // Closing the server.
@@ -37,13 +37,29 @@ public class Server {
 				clients.get(i).getSocketOut().close();
 				clients.get(i).getSocket().close();
 			}
+			app.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void main(String[] args) {
-		Server server = new Server(9098);
+		int port = 9098;
+		//uncomment the below to input a custom server port. would require modification of the client.
+//		Scanner scanner = new Scanner(System.in);
+//		while (true) {
+//			try {
+//				System.out.println("Please input the port you would like to run the server on.");
+//				String rawInput = scanner.nextLine();
+//				port = Integer.parseInt(rawInput);
+//				if (port > 0 && port <= 65535) {
+//					break;
+//				}
+//			} catch (Exception e) {
+//				System.out.println("Please input a valid port number!");
+//			}
+//		}
+		Server server = new Server(port);
 		System.out.println("Server is running");
 		server.communicateWithClient();
 	}
