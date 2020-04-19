@@ -11,8 +11,6 @@ import crs.src.server.Student;
 /**
  * This was initially programmed for a MariaDB implementation of MYSql. It
  * should still work as expected, even for a Mysql server.
- * 
- * @author cloud
  *
  */
 public class SqlServer {
@@ -21,6 +19,16 @@ public class SqlServer {
 	private String schema;
 	private Connection con;
 
+	/**
+	 * Initialize the connection to an SQL server.
+	 * 
+	 * @param sqlServerLocation The SQL address, for jdbc.
+	 * @param schema            The SQL database/schema, the thing that contains the
+	 *                          tables.
+	 * @param username          The user of the SQL server.
+	 * @param password          The password for the SQL server user.
+	 * @throws SQLException Thrown when an SQL issue comes up.
+	 */
 	public SqlServer(String sqlServerLocation, String schema, String username, String password) throws SQLException {
 		// note, passing the password as a string is insecure.
 		// but it should not be that horrible for a demo product.
@@ -34,6 +42,14 @@ public class SqlServer {
 
 	}
 
+	/**
+	 * Connect to the server, if we need to create the schema/database, do so,
+	 * otherwise load up the database.
+	 * 
+	 * @param username The user for the SQL server
+	 * @param password The users password for the SQL server
+	 * @throws SQLException Error, something has gone wrong if this happens.
+	 */
 	private void setupServer(String username, String password) throws SQLException {
 		this.setupSchemaSQL(username, password);
 		Statement statement = con.createStatement();
@@ -45,12 +61,23 @@ public class SqlServer {
 		statement.close();
 	}
 
+	/**
+	 * Create and/or connect to the schema/database.
+	 * 
+	 * @param username The sql server user
+	 * @param password the sql server user password.
+	 * @throws SQLException Error, unable to properly connect to server.
+	 */
 	public void setupSchemaSQL(String username, String password) throws SQLException {
+		// create statement
 		Statement statement = this.con.createStatement();
+		// check how many of the schema exist. should be a binary thing, 1 it exists, 0
+		// it does not.
 		ResultSet rs = statement.executeQuery(
 				"SELECT count(*) AS total FROM information_schema.schemata WHERE (SCHEMA_NAME ='" + this.schema + "')");
 		int exists = 0;
 		while (rs.next()) {
+			// test if it exists.
 			exists = rs.getInt("total");
 		}
 		// if the schema/database does not exist, create it.
@@ -58,16 +85,27 @@ public class SqlServer {
 			System.out.println("Creating database/schema `" + this.schema + "`.");
 			statement.executeUpdate("CREATE SCHEMA `" + this.schema + "`");
 		}
+
+		// close our temp statement
 		statement.close();
+		// and set the connection to our new schema/database
 		this.con.close();
 		this.con = DriverManager.getConnection(this.sqlServerLocation + this.schema, username, password);
 	}
 
+	/**
+	 * Set up the student table in the database.
+	 * 
+	 * @param statement The statement that will execute our query and maybe execute
+	 *                  an update
+	 * @throws SQLException Error, not properly connected to SQL server.
+	 */
 	public void setupStudentSQL(Statement statement) throws SQLException {
 		ResultSet rs = statement
 				.executeQuery("SELECT count(*) AS total FROM information_schema.tables WHERE (TABLE_NAME ='students')");
 		int exists = 0;
 		while (rs.next()) {
+			// 0 it does not exist, 1 it does.
 			exists = rs.getInt("total");
 		}
 		// if the table does not exist, create it.
@@ -76,9 +114,7 @@ public class SqlServer {
 			// generated command from MySQL Workbench
 			statement.executeUpdate(
 					"CREATE TABLE `students` (`id` INT NOT NULL,`name` VARCHAR(45) NOT NULL, PRIMARY KEY (`id`));");
-
 			// also add in some basic students, to show basics.
-			// and yes, we need to do it one at a time...
 			this.addStudent(1, "test");
 			this.addStudent(2, "long");
 			this.addStudent(3, "cloud");
@@ -86,6 +122,12 @@ public class SqlServer {
 		}
 	}
 
+	/**
+	 * Set up the course table in the database
+	 * 
+	 * @param statement Statement to execute query/updates.
+	 * @throws SQLException Error, most likely due to improper server connection.
+	 */
 	public void setupCoursesSQL(Statement statement) throws SQLException {
 		ResultSet rs = statement
 				.executeQuery("SELECT count(*) AS total FROM information_schema.tables WHERE (TABLE_NAME ='courses')");
@@ -98,9 +140,7 @@ public class SqlServer {
 			System.out.println("Creating TABLE 'courses'.");
 			// generated command from MySQL Workbench
 			statement.executeUpdate("CREATE TABLE `courses` (`name` VARCHAR(7) NOT NULL, PRIMARY KEY (`name`));");
-
-			// also add in some basic students, to show basics.
-			// and yes, we need to do it one at a time...
+			// also add in some courses, to show basics.
 			this.addCourse("ENGG", 233);
 			this.addCourse("ENSF", 409);
 			this.addCourse("CPSC", 319);
@@ -109,6 +149,12 @@ public class SqlServer {
 		}
 	}
 
+	/**
+	 * Set up the prereq table in the database
+	 * 
+	 * @param statement Statement to execute query/updates.
+	 * @throws SQLException Error, most likely due to improper server connection.
+	 */
 	public void setupRequisitesSQL(Statement statement) throws SQLException {
 		ResultSet rs = statement.executeQuery(
 				"SELECT count(*) AS total FROM information_schema.tables WHERE (TABLE_NAME ='requisites')");
@@ -123,8 +169,7 @@ public class SqlServer {
 			statement.executeUpdate(
 					"CREATE TABLE `requisites` (`course` VARCHAR(7) NOT NULL, `requisite` VARCHAR(7) NOT NULL);");
 
-			// also add in some basic students, to show basics.
-			// and yes, we need to do it one at a time...
+			// also add in some basic prereqs, to show basics.
 			this.addRequisite("ENSF", 409, "ENGG", 233);
 			this.addRequisite("CPSC", 409, "ENGG", 233);
 			this.addRequisite("ENGG", 233, "TEST", 123);
@@ -132,6 +177,12 @@ public class SqlServer {
 		}
 	}
 
+	/**
+	 * Setup the lectures (previously offering) table.
+	 * 
+	 * @param statement Statement to execute query/updates.
+	 * @throws SQLException Error, most likely due to improper server connection.
+	 */
 	public void setupLecturesSQL(Statement statement) throws SQLException {
 		ResultSet rs = statement
 				.executeQuery("SELECT count(*) AS total FROM information_schema.tables WHERE (TABLE_NAME ='lectures')");
@@ -146,8 +197,7 @@ public class SqlServer {
 			statement.executeUpdate(
 					"CREATE TABLE `lectures` (`id` INT NOT NULL, `course` VARCHAR(45) NOT NULL, `cap` INT NOT NULL);");
 
-			// also add in some basic students, to show basics.
-			// and yes, we need to do it one at a time...
+			// also add in some basic lectures, to show basics.
 			this.addLecture("ENGG", 233, 1, 50);
 			this.addLecture("ENGG", 233, 2, 200);
 			this.addLecture("ENSF", 409, 1, 90);
@@ -157,6 +207,12 @@ public class SqlServer {
 		}
 	}
 
+	/**
+	 * Setup the registrations table
+	 * 
+	 * @param statement Statement to execute query/updates.
+	 * @throws SQLException Error, most likely due to improper server connection.
+	 */
 	public void setupRegistrationsSQL(Statement statement) throws SQLException {
 		ResultSet rs = statement.executeQuery(
 				"SELECT count(*) AS total FROM information_schema.tables WHERE (TABLE_NAME ='registrations')");
@@ -171,8 +227,7 @@ public class SqlServer {
 			statement.executeUpdate(
 					"CREATE TABLE `registrations` (`student_id` INT NOT NULL, `course` VARCHAR(45) NOT NULL, `lecture_id` INT NOT NULL);");
 
-			// also add in some basic students, to show basics.
-			// and yes, we need to do it one at a time...
+			// also add in some basic registrations, to show basics.
 			// If the lecture_id is 0, assume the student has already taken this course.
 			this.addRegistration("ENGG", 233, 2, 0);
 			this.addRegistration("ABCD", 101, 1, 0);
@@ -186,18 +241,41 @@ public class SqlServer {
 		}
 	}
 
+	/**
+	 * Add a student directly to the sql database.
+	 * 
+	 * @param id      The id of the student to add.
+	 * @param student The name of the student to add
+	 * @throws SQLException Communication error / improper connection.
+	 */
 	public void addStudent(int id, String student) throws SQLException {
 		Statement statement = con.createStatement();
 		statement.executeUpdate("INSERT INTO `students` (`id`, `name`) VALUES ('" + id + "', '" + student + "')");
 		statement.close();
 	}
 
+	/**
+	 * Add a course directly to the sql database.
+	 * 
+	 * @param name Name of the course
+	 * @param num  Course number
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public void addCourse(String name, int num) throws SQLException {
 		Statement statement = con.createStatement();
 		statement.executeUpdate("INSERT INTO `courses` (`name`) VALUES ('" + name.toUpperCase() + num + "')");
 		statement.close();
 	}
 
+	/**
+	 * Adds a new prereq for a course
+	 * 
+	 * @param courseName    The course name that will get a prereq
+	 * @param courseNum     the course num that will get a prereq
+	 * @param requisiteName the course name of the prereq
+	 * @param requisiteNum  the course number of the prereq
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public void addRequisite(String courseName, int courseNum, String requisiteName, int requisiteNum)
 			throws SQLException {
 		Statement statement = con.createStatement();
@@ -206,6 +284,15 @@ public class SqlServer {
 		statement.close();
 	}
 
+	/**
+	 * Adds a new lecture for a course to the database
+	 * 
+	 * @param course    The course name that will get a new lecture
+	 * @param courseNum The course number that will get a new lecture
+	 * @param lecId     The lecture's id
+	 * @param cap       the max amount of students in the lecture.
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public void addLecture(String course, int courseNum, int lecId, int cap) throws SQLException {
 		Statement statement = con.createStatement();
 		statement.executeUpdate("INSERT INTO `lectures` (`id`,`course`,`cap`) VALUES ('" + lecId + "','"
@@ -213,6 +300,15 @@ public class SqlServer {
 		statement.close();
 	}
 
+	/**
+	 * Adds a new registration to the database
+	 * 
+	 * @param course    The course name for the registration
+	 * @param courseNum The course number for the registration
+	 * @param studentId The student id, who is registered
+	 * @param lectureId The lecture id that the student is registered to.
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public void addRegistration(String course, int courseNum, int studentId, int lectureId) throws SQLException {
 		Statement statement = con.createStatement();
 		statement.executeUpdate("INSERT INTO `registrations` (`student_id`,`course`,`lecture_id`) VALUES ('" + studentId
@@ -220,12 +316,29 @@ public class SqlServer {
 		statement.close();
 	}
 
+	/**
+	 * Removes a registration from the database
+	 * 
+	 * @param course    The course name that is registered to
+	 * @param courseNum the course number that is registered to
+	 * @param studentId The student that is registered
+	 * @param lectureId The lecture that is registered to.
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public void removeRegistration(String course, int courseNum, int studentId, int lectureId) throws SQLException {
 		Statement statement = con.createStatement();
-		statement.executeUpdate("DELETE FROM `registrations` WHERE (`student_id` = '" + studentId
-				+ "') AND (`course` = '"+ course.toUpperCase() + courseNum + "') AND (`lecture_id` = '"+ lectureId + "')");
+		statement.executeUpdate(
+				"DELETE FROM `registrations` WHERE (`student_id` = '" + studentId + "') AND (`course` = '"
+						+ course.toUpperCase() + courseNum + "') AND (`lecture_id` = '" + lectureId + "')");
 		statement.close();
 	}
+
+	/**
+	 * Fetches all students from the database.
+	 * 
+	 * @return ArrayList<Student> is a list of all students in the database.
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public ArrayList<Student> getStudents() throws SQLException {
 		ArrayList<Student> students = new ArrayList<Student>();
 		Statement statement = con.createStatement();
@@ -237,6 +350,12 @@ public class SqlServer {
 		return students;
 	}
 
+	/**
+	 * Fetches all courses from the database
+	 * 
+	 * @return ArrayList<Course> is a list of all the courses in the database.
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public ArrayList<Course> getCourses() throws SQLException {
 		ArrayList<Course> courses = new ArrayList<Course>();
 		Statement statement = con.createStatement();
@@ -249,6 +368,12 @@ public class SqlServer {
 		return courses;
 	}
 
+	/**
+	 * Loads all of the lectures from the database for the given course
+	 * 
+	 * @param course The course to load all of the lectures for
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public void setCourseLectures(Course course) throws SQLException {
 		Statement statement = con.createStatement();
 		ResultSet rs = statement.executeQuery("SELECT * FROM `lectures` WHERE course ='"
@@ -259,6 +384,13 @@ public class SqlServer {
 		}
 	}
 
+	/**
+	 * Connects a given course to all of the prereqs defined in the database
+	 * 
+	 * @param course  The course to load all of the lectures for
+	 * @param courses The course list, which must contain the prereq course.
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public void setCourseRequisites(Course course, ArrayList<Course> courses) throws SQLException {
 		Statement statement = con.createStatement();
 		ResultSet rs = statement.executeQuery("SELECT * FROM `requisites` WHERE course ='"
@@ -274,6 +406,14 @@ public class SqlServer {
 		}
 	}
 
+	/**
+	 * Registers for the course, all students that are taking it.
+	 * 
+	 * @param course   The course, should have some lectures contained.
+	 * @param students The student list, which should contain some students that are
+	 *                 taking this course.
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public void setCourseRegistrations(Course course, ArrayList<Student> students) throws SQLException {
 		Statement statement = con.createStatement();
 		ResultSet rs = statement.executeQuery("SELECT * FROM `registrations` WHERE course ='"
@@ -292,6 +432,12 @@ public class SqlServer {
 		}
 	}
 
+	/**
+	 * Registers a student for the courses that they might be taking.
+	 * @param student The student to register for
+	 * @param courses The course list, which should have some courses that the student will take.
+	 * @throws SQLException Communication error / improper connection
+	 */
 	public void setStudentRegistrations(Student student, ArrayList<Course> courses) throws SQLException {
 		Statement statement = con.createStatement();
 		ResultSet rs = statement
@@ -311,6 +457,9 @@ public class SqlServer {
 		}
 	}
 
+	/**
+	 * Shutdown the sql server.
+	 */
 	public void close() {
 		try {
 			this.con.close();
@@ -319,6 +468,7 @@ public class SqlServer {
 			e.printStackTrace();
 		}
 	}
+	//debug code! uncomment to test the sql server.
 //	public static void main(String[] args) {
 //		System.out.println("Debugging Sql Server.");
 //		try {
