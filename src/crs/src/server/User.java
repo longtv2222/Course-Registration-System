@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import crs.src.client.Command;
+import crs.src.shared.Command;
 
 public class User implements Runnable {
 	private ObjectInputStream socketIn;

@@ -1,4 +1,4 @@
-package crs.src.database;
+package crs.src.server.database;
 
 import java.sql.*;
 import java.util.ArrayList;

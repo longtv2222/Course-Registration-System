@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import crs.src.shared.Command;
+
 public class adminGUI extends ClientGUI {
 	private static final long serialVersionUID = 1L;
 
