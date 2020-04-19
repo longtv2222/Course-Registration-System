@@ -7,7 +7,6 @@ public class Course {
 	private String courseName;
 	private int courseNum;
 	private ArrayList<Course> preReq;
-	private ArrayList<Course> subReq;
 	private ArrayList<Lecture> lectures;
 
 	public Course(String courseName, int courseNum) {
@@ -25,32 +24,18 @@ public class Course {
 		}
 		this.preReq.add(preReq);
 	}
-	public void addSubReq(Course subReq) {
-		if (preReq != null && subReq.getCourseName().contentEquals(this.courseName)) {
-			System.err.println("Error! Cannot have course be subrequisite for itself!");
-			return;
-		}
-		this.subReq.add(subReq);
-	}
 
 	public ArrayList<Course> getPreReqs() {
 		return this.preReq;
 	}
-	public ArrayList<Course> getSubReqs() {
-		return this.subReq;
-	}
-	
+
 	public void addLecture(Lecture lecture) {
 		if (lecture != null && lecture.getTheCourse() == null) {
 			lecture.setTheCourse(this);
-			if (!lecture.getTheCourse().getCourseName().equals(courseName)
-					|| lecture.getTheCourse().getCourseNum() != courseNum) {
-				System.err.println("Error! This section belongs to another course!");
-				return;
-			}
-
 			lectures.add(lecture);
+			return;
 		}
+		System.err.println("Error! This section belongs to another course!");
 	}
 
 	public String getCourseName() {
@@ -73,10 +58,10 @@ public class Course {
 	public String toString() {
 		String st = "\n";
 		st += getCourseName() + " " + getCourseNum();
-		st += "\nAll course sections:\n";
-		for (Lecture c : lectures)
+		st += "\nAll course lectures:\n";
+		for (Lecture c : lectures) {
 			st += c;
-
+		}
 		st += "\nAll course prerequisites:\n";
 		for (Course c : preReq)
 			st += "Course: " + c.getCourseName() + " " + c.getCourseNum() + "\n";
@@ -85,18 +70,17 @@ public class Course {
 		return st;
 	}
 
-	public Lecture getCourseOfferingAt(int i) {
-		// TODO Auto-generated method stub
+	public Lecture getLectureAt(int i) {
 		if (i < 0 || i >= lectures.size())
 			return null;
 		else
 			return lectures.get(i);
 	}
 
-	public Lecture getCourseOfferingSection(int section) {
-		for (Lecture o : this.lectures)
-			if (o.getSecNum() == section)
-				return o;
+	public Lecture getLectureSection(int section) {
+		for (Lecture l : this.lectures)
+			if (l.getSecNum() == section)
+				return l;
 		return null;
 	}
 

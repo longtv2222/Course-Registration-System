@@ -1,4 +1,4 @@
-package crs.src.server;
+package crs.src.client;
 
 import java.io.Serializable;
 

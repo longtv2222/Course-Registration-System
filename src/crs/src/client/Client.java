@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import src.Server.Command;
 
 public class Client implements Runnable {
 	private ObjectInputStream socketIn; // to read from the socket

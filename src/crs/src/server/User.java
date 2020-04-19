@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import crs.src.client.Command;
+
 public class User implements Runnable {
 	private ObjectInputStream socketIn;
 	private ObjectOutputStream socketOut;
@@ -125,7 +127,7 @@ public class User implements Runnable {
 		if (searchedCourse == null) {
 			writeErrorMsg("The course you want to remove does not exist in the system.");
 		} else {
-			Lecture course = searchedCourse.getCourseOfferingSection(Integer.parseInt(removeCourseData[2]));
+			Lecture course = searchedCourse.getLectureSection(Integer.parseInt(removeCourseData[2]));
 			Registration reg = st.findRegistration(course);
 			if (reg != null) {
 				writeMsg("You have been removed from the selected course offering.");
@@ -147,7 +149,7 @@ public class User implements Runnable {
 			} else {
 				Registration registration = new Registration();
 				writeMsg(registration.completeRegistration(st,
-						searchedCourse.getCourseOfferingSection(Integer.parseInt(addCourseData[2]))));
+						searchedCourse.getLectureSection(Integer.parseInt(addCourseData[2]))));
 			}
 		} catch (NullPointerException e) {
 			writeErrorMsg("The course you want to add does not exist!");

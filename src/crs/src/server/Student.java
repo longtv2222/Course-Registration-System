@@ -13,6 +13,7 @@ public class Student {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
 		studentRegList = new ArrayList<Registration>();
+		studentTakenList = new ArrayList<Course>();
 	}
 
 	public Registration findRegistration(Lecture offering) {
@@ -29,6 +30,10 @@ public class Student {
 				return c;
 		}
 		return null;
+	}
+
+	public void addTaken(Course course) {
+		this.studentTakenList.add(course);
 	}
 
 	public String getStudentName() {
@@ -62,35 +67,33 @@ public class Student {
 	}
 
 	public boolean canRegister(Course course) {
+//		System.out.println("start testing!");
 		if (this.studentRegList.size() >= 6) {
 			System.err.println("Error! Student cannot register, no schedual availablility.");
 			return false;
 		}
-		if (!this.studentTakenList.containsAll(course.getPreReqs())) {
-			System.err.println("Error! Student cannot register, has not taken all prereqs!.");
-			return false;
-		}
-		for(Course sr : (course.getSubReqs())) {
-			if(this.studentTakenList.contains(sr)==false) {
-				boolean contains = false;
-				for(Registration r : this.studentRegList) {
-					if(sr.equals(r.getTheLecture().getTheCourse())) {
-						contains = true;
-					}
-				}
-				if(!contains) {
-					System.err.println("Errorr! Student cannot register, has not taken or is not taking all subreqs!");
-					return false;
-				}
+		if (!this.studentTakenList.isEmpty() && this.studentTakenList.contains(course)) {
+			if (!this.studentTakenList.containsAll(course.getPreReqs())) {
+				System.err.println("Error! Student cannot register, they have not completed all prerequisites.");
+				return false;
 			}
 		}
+//		System.out.println("testing worked!");
 		return true;
 	}
 
 	public String listRegistered() {
-		String s = "";
+		String s = "Courses registered in:";
 		for (Registration r : this.studentRegList) {
 			s += r + "\n";
+		}
+		return s;
+	}
+
+	public String listTaken() {
+		String s = "Courses taken:";
+		for (Course c : this.studentTakenList) {
+			s += c.getCourseName() + " " + c.getCourseNum() + "\n";
 		}
 		return s;
 	}

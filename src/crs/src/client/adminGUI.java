@@ -11,8 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import src.Server.Command;
-
 public class adminGUI extends ClientGUI {
 	private static final long serialVersionUID = 1L;
 

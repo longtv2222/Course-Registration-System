@@ -46,16 +46,16 @@ public class CourseCatalogue {
 		Registration reg8 = new Registration();
 		Registration reg9 = new Registration();
 		Registration reg10 = new Registration();
-		reg.completeRegistration(st, myCourse.getCourseOfferingAt(0));
-		reg2.completeRegistration(st2, myCourse.getCourseOfferingAt(0));
-		reg3.completeRegistration(st3, myCourse.getCourseOfferingAt(0));
-		reg4.completeRegistration(st4, myCourse.getCourseOfferingAt(0));
-		reg5.completeRegistration(st5, myCourse.getCourseOfferingAt(0));
-		reg6.completeRegistration(st6, myCourse.getCourseOfferingAt(0));
-		reg7.completeRegistration(st7, myCourse.getCourseOfferingAt(0));
-		reg8.completeRegistration(st8, myCourse.getCourseOfferingAt(0));
-		reg9.completeRegistration(st9, myCourse.getCourseOfferingAt(0));
-		reg10.completeRegistration(st10, myCourse.getCourseOfferingAt(0));
+		reg.completeRegistration(st, myCourse.getLectureAt(0));
+		reg2.completeRegistration(st2, myCourse.getLectureAt(0));
+		reg3.completeRegistration(st3, myCourse.getLectureAt(0));
+		reg4.completeRegistration(st4, myCourse.getLectureAt(0));
+		reg5.completeRegistration(st5, myCourse.getLectureAt(0));
+		reg6.completeRegistration(st6, myCourse.getLectureAt(0));
+		reg7.completeRegistration(st7, myCourse.getLectureAt(0));
+		reg8.completeRegistration(st8, myCourse.getLectureAt(0));
+		reg9.completeRegistration(st9, myCourse.getLectureAt(0));
+		reg10.completeRegistration(st10, myCourse.getLectureAt(0));
 	}
 
 	private void loadFromDataBase() {
@@ -66,8 +66,8 @@ public class CourseCatalogue {
 
 	public void createCourseOffering(Course c, int secNum, int secCap) {
 		if (c != null) {
-			Lecture theOffering = new Lecture(secNum, secCap);
-			c.addOffering(theOffering);
+			Lecture lecture = new Lecture(secNum, secCap);
+			c.addLecture(lecture);
 		}
 	}
 

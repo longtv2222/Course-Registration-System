@@ -12,8 +12,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import src.Server.Command;
-
 public class StudentGUI extends ClientGUI {
 	private static final long serialVersionUID = 1L;
 	private JButton searchCourse = new JButton("Search Course");
