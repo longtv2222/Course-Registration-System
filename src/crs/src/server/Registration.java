@@ -1,11 +1,11 @@
-package src.Server;
+package crs.src.server;
 
 public class Registration {
 	private Student theStudent;
-	private CourseOffering theOffering;
+	private Lecture theOffering;
 	private char grade;
 
-	public String completeRegistration(Student st, CourseOffering of) {
+	public String completeRegistration(Student st, Lecture of) {
 		this.setTheStudent(st);
 		this.setTheOffering(of);
 		return this.addRegistration();
@@ -34,11 +34,11 @@ public class Registration {
 		this.theStudent = theStudent;
 	}
 
-	public CourseOffering getTheOffering() {
+	public Lecture getTheOffering() {
 		return theOffering;
 	}
 
-	public void setTheOffering(CourseOffering theOffering) {
+	public void setTheOffering(Lecture theOffering) {
 		this.theOffering = theOffering;
 	}
 

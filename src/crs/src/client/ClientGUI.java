@@ -1,4 +1,4 @@
-package src.Client;
+package crs.src.client;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;

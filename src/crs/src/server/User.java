@@ -1,4 +1,4 @@
-package src.Server;
+package crs.src.server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -125,7 +125,7 @@ public class User implements Runnable {
 		if (searchedCourse == null) {
 			writeErrorMsg("The course you want to remove does not exist in the system.");
 		} else {
-			CourseOffering course = searchedCourse.getCourseOfferingSection(Integer.parseInt(removeCourseData[2]));
+			Lecture course = searchedCourse.getCourseOfferingSection(Integer.parseInt(removeCourseData[2]));
 			Registration reg = st.findRegistration(course);
 			if (reg != null) {
 				writeMsg("You have been removed from the selected course offering.");

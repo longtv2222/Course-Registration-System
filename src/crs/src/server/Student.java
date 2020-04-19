@@ -1,4 +1,4 @@
-package src.Server;
+package crs.src.server;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class Student {
 		studentRegList = new ArrayList<Registration>();
 	}
 
-	public Registration findRegistration(CourseOffering offering) {
+	public Registration findRegistration(Lecture offering) {
 		for (Registration r : studentRegList) {
 			if (r.getTheOffering().equals(offering))
 				return r;

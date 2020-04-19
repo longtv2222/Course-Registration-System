@@ -1,4 +1,4 @@
-package src.Client;
+package crs.src.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

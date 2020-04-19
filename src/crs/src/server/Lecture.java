@@ -1,8 +1,8 @@
-package src.Server;
+package crs.src.server;
 
 import java.util.ArrayList;
 
-public class CourseOffering {
+public class Lecture {
 
 	private int secNum;
 	private int secCap;
@@ -10,7 +10,7 @@ public class CourseOffering {
 	// private ArrayList<Student> studentList;
 	private ArrayList<Registration> offeringRegList;
 
-	public CourseOffering(int secNum, int secCap) {
+	public Lecture(int secNum, int secCap) {
 		this.setSecNum(secNum);
 		this.setSecCap(secCap);
 		offeringRegList = new ArrayList<Registration>();

@@ -1,4 +1,4 @@
-package src.Server;
+package crs.src.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;

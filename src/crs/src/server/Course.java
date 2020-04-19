@@ -1,4 +1,4 @@
-package src.Server;
+package crs.src.server;
 
 import java.util.ArrayList;
 
@@ -7,14 +7,14 @@ public class Course {
 	private String courseName;
 	private int courseNum;
 	private ArrayList<Course> preReq;
-	private ArrayList<CourseOffering> offeringList;
+	private ArrayList<Lecture> offeringList;
 
 	public Course(String courseName, int courseNum) {
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
 		// Both of the following are only association
 		preReq = new ArrayList<Course>();
-		offeringList = new ArrayList<CourseOffering>();
+		offeringList = new ArrayList<Lecture>();
 	}
 
 	public void addPreReq(Course preReq) {
@@ -25,7 +25,7 @@ public class Course {
 		this.preReq.add(preReq);
 	}
 
-	public void addOffering(CourseOffering offering) {
+	public void addOffering(Lecture offering) {
 		if (offering != null && offering.getTheCourse() == null) {
 			offering.setTheCourse(this);
 			if (!offering.getTheCourse().getCourseName().equals(courseName)
@@ -59,7 +59,7 @@ public class Course {
 		String st = "\n";
 		st += getCourseName() + " " + getCourseNum();
 		st += "\nAll course sections:\n";
-		for (CourseOffering c : offeringList)
+		for (Lecture c : offeringList)
 			st += c;
 
 		st += "\nAll course prerequisites:\n";
@@ -70,7 +70,7 @@ public class Course {
 		return st;
 	}
 
-	public CourseOffering getCourseOfferingAt(int i) {
+	public Lecture getCourseOfferingAt(int i) {
 		// TODO Auto-generated method stub
 		if (i < 0 || i >= offeringList.size())
 			return null;
@@ -78,8 +78,8 @@ public class Course {
 			return offeringList.get(i);
 	}
 
-	public CourseOffering getCourseOfferingSection(int section) {
-		for (CourseOffering o : this.offeringList)
+	public Lecture getCourseOfferingSection(int section) {
+		for (Lecture o : this.offeringList)
 			if (o.getSecNum() == section)
 				return o;
 		return null;
