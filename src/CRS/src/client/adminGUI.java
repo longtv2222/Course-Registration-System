@@ -65,10 +65,10 @@ public class adminGUI extends ClientGUI {
 
 		JPanel subPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
 
-		subPanel.add(addNewCourse);
 		subPanel.add(displayAll);
-		subPanel.add(searchStudentID);
 		subPanel.add(displayAllStudent);
+		subPanel.add(searchStudentID);
+		subPanel.add(addNewCourse);
 		subPanel.add(addNewLecture);
 		subPanel.add(addNewStudent);
 		subPanel.add(exit);
