@@ -31,10 +31,6 @@ public class ClientGUI extends JFrame {
 	 */
 	protected JTextField serverPort = new JTextField("9098",6);
 	/**
-	 * logIn button.
-	 */
-	private JButton logIn = new JButton("Log in");
-	/**
 	 * userName field.
 	 */
 	protected JTextField userName = new JTextField(10);
@@ -89,7 +85,7 @@ public class ClientGUI extends JFrame {
 				serverPrompt = "Please enter a valid server address: ";
 				continue;
 			}
-			if(this.port > 65535) {
+			if(this.port > 65535 || port < 0) {
 				serverPrompt = "Please enter a valid port: ";
 			}
 			break;

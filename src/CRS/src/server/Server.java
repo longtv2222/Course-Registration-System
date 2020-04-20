@@ -48,6 +48,8 @@ public class Server {
 		try {
 			Application app = new Application(); // Asumming that this courseCat has been loaded by
 													// DBManager
+
+			System.out.println("Server is running on port "+port+".");
 			serverSocket = new ServerSocket(port);
 			while (running) {
 				if (!running)
@@ -64,27 +66,35 @@ public class Server {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Using the keyboard input, we don't want to close it, so this leaves it up to the JVM to close.!
+	 */
+	public static final Scanner keyboard = new Scanner(System.in);
 	public static void main(String[] args) {
 		int port = 9098;
-		// uncomment the below to input a custom server port. would require modification
-		// of the client.
-		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			try {
-				System.out.println("Please input the port you would like to run the server on.");
-				String rawInput = scanner.nextLine();
+				System.out.println("Please input the port you would like to run the server on, defaults to 9098.");
+				String rawInput = null;
+				while(true) {
+					if(keyboard.hasNextLine()) {
+						rawInput = keyboard.nextLine();
+						break;
+					}
+				}
+				if(rawInput.equals("")) {
+					break;
+				}
 				port = Integer.parseInt(rawInput);
-				if (port > 0 && port <= 65535) {
+				if (port > 0 && port < 65535) {
 					break;
 				}
 			} catch (Exception e) {
 				System.out.println("Please input a valid port number!");
 			}
 		}
-		scanner.close();
 		Server server = new Server(port);
-		System.out.println("Server is running");
+		System.out.println("Server is starting");
 		server.communicateWithClient();
 	}
 }

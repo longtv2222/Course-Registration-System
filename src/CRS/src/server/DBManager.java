@@ -17,22 +17,48 @@ public class DBManager {
 	 * Default constructor of DBManager that creates new object of database.
 	 */
 	public DBManager() {
-		Scanner scanner = new Scanner(System.in);
-		String sqlServer = "jdbc:mysql://localhost:3306/";
-		String schema = "school_long_cloud";
-		String user = "mysql";
-		String password = "";
-
+		String sqlServer = null;
+		String schema = null;
+		String user = null;
+		String password = null;
+		System.out.println("Please input the address for the sql server, defaults to 'jdbc:mysql://localhost:3306/' on no input.");
+		while(true) {
+			if(Server.keyboard.hasNextLine()) {
+				sqlServer = Server.keyboard.nextLine();
+				break;
+			}
+		}
+		if(sqlServer.equals("")) {
+			sqlServer="jdbc:mysql://localhost:3306/";
+		}
+		System.out.println("Please input the schema/database the sql server will use, defaults to 'school_long_cloud' on no input.");
+		while(true) {
+			if(Server.keyboard.hasNextLine()) {
+				schema = Server.keyboard.nextLine();
+				break;
+			}
+		}
+		if(schema.equals("")) {
+			schema="school_long_cloud";
+		}
+		System.out.println("Please input the username for the sql server, defaults to 'mysql' on no input.");
+		while(true) {
+			if(Server.keyboard.hasNextLine()) {
+				user = Server.keyboard.nextLine();
+				break;
+			}
+		}
+		if(user.equals("")) {
+			user = "mysql";
+		}
+		System.out.println("Please input the password for the sql server, or enter for no password.");
+		while(true) {
+			if(Server.keyboard.hasNextLine()) {
+				password = Server.keyboard.nextLine();
+				break;
+			}
+		};
 		db = new Database(sqlServer, schema, user, password);
-//		System.out.println("Please input the address for the sql server, eg 'jdbc:mysql://localhost:3306/'.");
-//		sqlServer = scanner.nextLine();
-//		System.out.println("Please input the schema/database the sql server will use, eg 'school_long_cloud'.");
-//		schema = scanner.nextLine();
-//		System.out.println("Please input the username for the sql server, eg 'mysql'.");
-//		user = scanner.nextLine();
-//		System.out.println("Please input the password for the sql server, or enter for no password.");
-//		password = scanner.nextLine();
-//		courseList = new ArrayList<Course>();
 	}
 
 	/**
