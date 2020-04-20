@@ -23,6 +23,18 @@ public class ClientGUI extends JFrame {
 	 */
 	protected JTextArea textArea = new JTextArea(20, 10);
 	/**
+	 * serverAddress field.
+	 */	
+	protected JTextField serverAddress = new JTextField("localhost",20);
+	/**
+	 * serverPort field.
+	 */
+	protected JTextField serverPort = new JTextField("9098",6);
+	/**
+	 * logIn button.
+	 */
+	private JButton logIn = new JButton("Log in");
+	/**
 	 * userName field.
 	 */
 	protected JTextField userName = new JTextField(10);
@@ -62,10 +74,31 @@ public class ClientGUI extends JFrame {
 	 */
 	public void adminUserDialogue() {
 		JFrame frame = new JFrame();
+		JPanel serverPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
+		serverPanel.add(new JLabel("SERVER ADDRESS: "));
+		serverPanel.add(serverAddress);
+		serverPanel.add(new JLabel("SERVER PORT: "));
+		serverPanel.add(serverPort);
+		String serverPrompt = "Please enter the server address: ";
+		while(true) {
+			try {
+				JOptionPane.showConfirmDialog(frame, serverPanel, serverPrompt,JOptionPane.OK_CANCEL_OPTION);
+				this.port = Integer.parseInt(serverPort.getText());
+				this.host = serverAddress.getText();
+			} catch( NumberFormatException e) {
+				serverPrompt = "Please enter a valid server address: ";
+				continue;
+			}
+			if(this.port > 65535) {
+				serverPrompt = "Please enter a valid port: ";
+			}
+			break;
+		}
+//		System.out.println(serverAddress.getText()+" "+serverPort.getText());
 		String[] options = new String[2];
 		options[0] = new String("ADMIN");
 		options[1] = new String("STUDENT");
-		int option = JOptionPane.showOptionDialog(frame.getContentPane(), "Please declare who you are.", "Popup Window",
+		int option = JOptionPane.showOptionDialog(frame, "Please declare who you are.", "Popup Window",
 				0, JOptionPane.INFORMATION_MESSAGE, null, options, null);
 		if (option == JOptionPane.YES_OPTION) // Yes option is admin.
 			new adminGUI(host, port);

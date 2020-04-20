@@ -3,6 +3,7 @@ package CRS.src.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -68,19 +69,20 @@ public class Server {
 		int port = 9098;
 		// uncomment the below to input a custom server port. would require modification
 		// of the client.
-//		Scanner scanner = new Scanner(System.in);
-//		while (true) {
-//			try {
-//				System.out.println("Please input the port you would like to run the server on.");
-//				String rawInput = scanner.nextLine();
-//				port = Integer.parseInt(rawInput);
-//				if (port > 0 && port <= 65535) {
-//					break;
-//				}
-//			} catch (Exception e) {
-//				System.out.println("Please input a valid port number!");
-//			}
-//		}
+		Scanner scanner = new Scanner(System.in);
+		while (true) {
+			try {
+				System.out.println("Please input the port you would like to run the server on.");
+				String rawInput = scanner.nextLine();
+				port = Integer.parseInt(rawInput);
+				if (port > 0 && port <= 65535) {
+					break;
+				}
+			} catch (Exception e) {
+				System.out.println("Please input a valid port number!");
+			}
+		}
+		scanner.close();
 		Server server = new Server(port);
 		System.out.println("Server is running");
 		server.communicateWithClient();
