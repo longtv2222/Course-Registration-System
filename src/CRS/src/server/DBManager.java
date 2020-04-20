@@ -20,8 +20,8 @@ public class DBManager {
 		Scanner scanner = new Scanner(System.in);
 		String sqlServer = "jdbc:mysql://localhost:3306/";
 		String schema = "school_long_cloud";
-		String user = "root";
-		String password = "Uzumakinaruto2000.";
+		String user = "mysql";
+		String password = "";
 
 		db = new Database(sqlServer, schema, user, password);
 //		System.out.println("Please input the address for the sql server, eg 'jdbc:mysql://localhost:3306/'.");
