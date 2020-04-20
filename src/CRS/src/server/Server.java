@@ -52,8 +52,6 @@ public class Server {
 			System.out.println("Server is running on port " + port + ".");
 			serverSocket = new ServerSocket(port);
 			while (running) {
-				if (!running)
-					break;
 				User user = new User(serverSocket.accept(), this.clientList, app);
 				pool.execute(user);
 			}

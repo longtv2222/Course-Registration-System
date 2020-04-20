@@ -53,7 +53,8 @@ public class ClientGUI extends JFrame {
 		super("Main Window");
 		this.host = host;
 		this.port = port;
-		exitButton();
+		exitButton(); // Adding action to exit button.
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	/**
@@ -61,12 +62,7 @@ public class ClientGUI extends JFrame {
 	 */
 	private void exitButton() {
 		exit.addActionListener((ActionEvent e) -> { // Adding action to displayALL
-			if (client != null) {
-				client.closeSocket();
-				this.dispose();
-			} else {
-				System.exit(0);
-			}
+			this.closeClient();
 		});
 	}
 
@@ -83,9 +79,12 @@ public class ClientGUI extends JFrame {
 		String serverPrompt = "Please enter the server address: ";
 		while (true) {
 			try {
-				JOptionPane.showConfirmDialog(frame, serverPanel, serverPrompt, JOptionPane.OK_CANCEL_OPTION);
+				int choose = JOptionPane.showConfirmDialog(frame, serverPanel, serverPrompt,
+						JOptionPane.OK_CANCEL_OPTION);
 				this.port = Integer.parseInt(serverPort.getText());
 				this.host = serverAddress.getText();
+				if (choose == JOptionPane.CLOSED_OPTION || choose == JOptionPane.CANCEL_OPTION)
+					this.closeClient();
 			} catch (NumberFormatException e) {
 				serverPrompt = "Please enter a valid server address: ";
 				continue;
@@ -95,7 +94,6 @@ public class ClientGUI extends JFrame {
 			}
 			break;
 		}
-//		System.out.println(serverAddress.getText()+" "+serverPort.getText());
 		String[] options = new String[2];
 		options[0] = new String("ADMIN");
 		options[1] = new String("STUDENT");
@@ -103,8 +101,23 @@ public class ClientGUI extends JFrame {
 				JOptionPane.INFORMATION_MESSAGE, null, options, null);
 		if (option == JOptionPane.YES_OPTION) // Yes option is admin.
 			new adminGUI(host, port);
-		if (option == JOptionPane.NO_OPTION) // No option is student.
+		else if (option == JOptionPane.NO_OPTION) // No option is student.
 			new StudentGUI(host, port);
+		else {
+			this.closeClient();
+		}
+	}
+
+	/**
+	 * Closing the client view.
+	 */
+	public void closeClient() {
+		if (client != null) {
+			client.closeSocket();
+			this.dispose();
+		} else {
+			System.exit(0);
+		}
 	}
 
 	/**
