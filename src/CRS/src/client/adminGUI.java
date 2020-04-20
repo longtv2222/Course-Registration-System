@@ -96,7 +96,7 @@ public class adminGUI extends ClientGUI {
 	 * Adding action to view all student button.
 	 */
 	private void viewAllStudentButton() {
-		displayAllStudent.addActionListener((ActionEvent e) -> { // Adding action to displayALL
+		displayAllStudent.addActionListener((ActionEvent e) -> {
 			client.sendMessage(new Command(Command.VIEW_ALL_STUDENT, " "));
 		});
 	}
@@ -140,7 +140,7 @@ public class adminGUI extends ClientGUI {
 	/**
 	 * Adding action to add new lecture button.
 	 */
-	private void addNewLectureButton() { // To be implemeted
+	private void addNewLectureButton() {
 		addNewLecture.addActionListener((ActionEvent e) -> { // Adding action to displayALL
 			JTextField courseName = new JTextField(10), courseNum = new JTextField(10),
 					courseSection = new JTextField(10), courseCap = new JTextField(10);
@@ -157,7 +157,7 @@ public class adminGUI extends ClientGUI {
 	/**
 	 * Adding action to add new student button.
 	 */
-	private void addNewStudentButton() { // To be implemeted
+	private void addNewStudentButton() {
 		addNewStudent.addActionListener((ActionEvent e) -> { // Adding action to displayALL
 			JTextField studentName = new JTextField(10), studentID = new JTextField(10);
 			this.studentDialogue(studentName, studentID);
@@ -186,7 +186,7 @@ public class adminGUI extends ClientGUI {
 	 * Adding action to sign in button.
 	 */
 	private void signInButton() {
-		signIn.addActionListener((ActionEvent e) -> { // Done
+		signIn.addActionListener((ActionEvent e) -> {
 			try {
 				String name = userName.getText();
 				String id = ID.getText();

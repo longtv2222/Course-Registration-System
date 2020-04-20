@@ -24,12 +24,12 @@ public class ClientGUI extends JFrame {
 	protected JTextArea textArea = new JTextArea(20, 10);
 	/**
 	 * serverAddress field.
-	 */	
-	protected JTextField serverAddress = new JTextField("localhost",20);
+	 */
+	protected JTextField serverAddress = new JTextField("localhost", 20);
 	/**
 	 * serverPort field.
 	 */
-	protected JTextField serverPort = new JTextField("9098",6);
+	protected JTextField serverPort = new JTextField("9098", 6);
 	/**
 	 * userName field.
 	 */
@@ -61,7 +61,12 @@ public class ClientGUI extends JFrame {
 	 */
 	private void exitButton() {
 		exit.addActionListener((ActionEvent e) -> { // Adding action to displayALL
-			System.exit(0);
+			if (client != null) {
+				client.closeSocket();
+				this.dispose();
+			} else {
+				System.exit(0);
+			}
 		});
 	}
 
@@ -76,16 +81,16 @@ public class ClientGUI extends JFrame {
 		serverPanel.add(new JLabel("SERVER PORT: "));
 		serverPanel.add(serverPort);
 		String serverPrompt = "Please enter the server address: ";
-		while(true) {
+		while (true) {
 			try {
-				JOptionPane.showConfirmDialog(frame, serverPanel, serverPrompt,JOptionPane.OK_CANCEL_OPTION);
+				JOptionPane.showConfirmDialog(frame, serverPanel, serverPrompt, JOptionPane.OK_CANCEL_OPTION);
 				this.port = Integer.parseInt(serverPort.getText());
 				this.host = serverAddress.getText();
-			} catch( NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				serverPrompt = "Please enter a valid server address: ";
 				continue;
 			}
-			if(this.port > 65535 || port < 0) {
+			if (this.port > 65535 || port < 0) {
 				serverPrompt = "Please enter a valid port: ";
 			}
 			break;
@@ -94,8 +99,8 @@ public class ClientGUI extends JFrame {
 		String[] options = new String[2];
 		options[0] = new String("ADMIN");
 		options[1] = new String("STUDENT");
-		int option = JOptionPane.showOptionDialog(frame, "Please declare who you are.", "Popup Window",
-				0, JOptionPane.INFORMATION_MESSAGE, null, options, null);
+		int option = JOptionPane.showOptionDialog(frame, "Please declare who you are.", "Popup Window", 0,
+				JOptionPane.INFORMATION_MESSAGE, null, options, null);
 		if (option == JOptionPane.YES_OPTION) // Yes option is admin.
 			new adminGUI(host, port);
 		if (option == JOptionPane.NO_OPTION) // No option is student.

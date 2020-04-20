@@ -79,7 +79,8 @@ public class Client implements Runnable {
 			socketOut.writeObject(ID);
 			pool.execute(this);
 		} catch (IOException e) {
-			e.printStackTrace();
+			cg.displayErrorMessage("Cannot connect to server. Program terminated.");
+			System.exit(0);
 		}
 	}
 
@@ -134,6 +135,8 @@ public class Client implements Runnable {
 			socket.close();
 			socketIn.close();
 			socketOut.close();
+			pool.shutdown();
+			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

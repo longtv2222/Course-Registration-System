@@ -92,6 +92,7 @@ public class User implements Runnable {
 	 */
 	public void run() {
 		running = (st != null);
+		System.out.println(username + " has connected.");
 		// if we have no user, we have no program!
 		while (running) {
 			try {
@@ -304,7 +305,7 @@ public class User implements Runnable {
 	 */
 	private void searchCourse(String message) {
 		try {
-			String[] decodeMessage = message.split("SEARCH_COURSE"); // Data for search course is seperated by a space
+			String[] decodeMessage = message.split("SEARCH_COURSE"); // Data for search course is separated by a space
 			// decodeMessage[0] is course ID, [1] is course Number.
 			Course search = app.searchCourses(decodeMessage[0], Integer.parseInt(decodeMessage[1]));
 			writeMsg(search.toString());
