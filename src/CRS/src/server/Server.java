@@ -28,6 +28,10 @@ public class Server {
 	 * ThreadPool for users of this server.
 	 */
 	private ExecutorService pool;
+	/**
+	 * app is the application of this server.
+	 */
+	private Application app;
 
 	/**
 	 * Constructor of Server that initializes variables and sets up the server.
@@ -46,24 +50,48 @@ public class Server {
 	 */
 	public void communicateWithClient() {
 		try {
-			Application app = new Application(); // Asumming that this courseCat has been loaded by
-													// DBManager
+			app = new Application(); // Asumming that this courseCat has been loaded by
+										// DBManager
 
 			System.out.println("Server is running on port " + port + ".");
 			serverSocket = new ServerSocket(port);
+			System.out.println("Server is starting. Type 'exit' to exit.");
+			Thread getExit = new Thread() {
+				public void run() {
+					try {
+						while (running) {
+							if (keyboard.hasNextLine()) {
+								if (keyboard.nextLine().toLowerCase().equals("exit")) {
+									System.out.println("testing exit!");
+									running = false;
+								}
+							}
+						}
+						// Closing the server.
+						System.out.println("Exiting!");
+						for (User user : clientList) {
+							user.writeErrorMsg("Server is shutting down! Please restart the client to reconnect.");
+							user.close(); // Closing all threads of this server.
+						}
+						app.close();
+						serverSocket.close();
+						System.exit(0);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			};// Closing the server.
+			pool.execute(getExit);
 			while (running) {
-				User user = new User(serverSocket.accept(), this.clientList, app);
-				pool.execute(user);
-				if (Server.keyboard.hasNextLine() && Server.keyboard.nextLine().toLowerCase().equals("exit")) {
-					running = false;
+				try {
+					User user;
+					user = new User(serverSocket.accept(), clientList, app);
+					pool.execute(user);
+				} catch (IOException e) {
+					break;
 				}
 			}
-			for (User user : clientList) {
-				user.writeErrorMsg("Server is shutting down! Please restart the client to reconnect.");
-				user.close(); // Closing all threads of this server.
-			}
-			serverSocket.close(); // Closing the server.
-			app.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -99,7 +127,6 @@ public class Server {
 			}
 		}
 		Server server = new Server(port);
-		System.out.println("Server is starting, type 'exit' to exit.");
 		server.communicateWithClient();
 	}
 }

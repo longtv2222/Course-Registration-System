@@ -78,6 +78,7 @@ public class User implements Runnable {
 			socketIn.close();
 			socketOut.close();
 			socket.close();
+			st.setUser(null);
 			running = false;
 		} catch (IOException e) {
 			e.printStackTrace();
