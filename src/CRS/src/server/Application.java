@@ -12,8 +12,12 @@ public class Application {
 	 */
 	private ArrayList<Student> studentList;
 	/**
-	 * db is responsible for managing the data from the database.
+	 * currentId is the present client id to give.
 	 */
+	private Integer currentId;
+	/**
+	 * db is responsible for managing the data from the database.
+	 */	
 	DBManager db;
 
 	/**
@@ -21,6 +25,7 @@ public class Application {
 	 * member variables courseList and studentList.
 	 */
 	public Application() {
+		this.currentId = 0;
 		loadFromDataBase();
 	}
 
@@ -53,6 +58,9 @@ public class Application {
 		}
 	}
 
+	public synchronized Integer genClientId() {
+		return this.currentId++;
+	}
 	/**
 	 * Add a lecture to a course.
 	 * 

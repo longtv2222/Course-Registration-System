@@ -46,6 +46,7 @@ public class adminGUI extends ClientGUI {
 	 */
 	public adminGUI(String host, int port) {
 		super(host, port);
+		client = new Client(host, port, this);
 		this.adminMenu();
 	}
 
@@ -190,13 +191,9 @@ public class adminGUI extends ClientGUI {
 			try {
 				String name = userName.getText();
 				String id = ID.getText();
-				signIn.setEnabled(false); // Disable sign in button
-				userName.setEditable(false);
-				ID.setEditable(false);
-				client = new Client(host, port, name, Integer.parseInt(id), this);
+				client.setUsername(name);
+				client.setUserID(Integer.parseInt(id));
 				client.communicateWithServer();
-				System.out.println("Admin connected");
-				buttonEnable(true);
 			} catch (NumberFormatException error) {
 				displayErrorMessage("ID must be a number. Please try again.");
 				userName.setEditable(true);
@@ -204,5 +201,17 @@ public class adminGUI extends ClientGUI {
 				signIn.setEnabled(true);
 			}
 		});
+	}
+
+	/**
+	 * Enable and disable buttons on the client.
+	 */
+	@Override
+	public void doButtons() {
+		signIn.setEnabled(false); // Disable sign in button
+		userName.setEditable(false);
+		ID.setEditable(false);
+		buttonEnable(true);
+		System.out.println("Admin connected");
 	}
 }

@@ -328,8 +328,20 @@ public class ClientGUI extends JFrame {
 
 	}
 
+	/**
+	 * Enable and disable buttons on the client.
+	 */
+	public void doButtons() {
+	}
+
+	/**
+	 * Actually run the client, arguments are unused.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		ClientGUI client = new ClientGUI("localhost", 9098);
 		client.adminUserDialogue();
 	}
+
 }

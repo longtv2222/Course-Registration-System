@@ -48,6 +48,7 @@ public class StudentGUI extends ClientGUI {
 	 * Display student's menu.
 	 */
 	public void studentMenu() { // Creating a menu
+		client = new Client(host, port, this);
 		textArea.setFont(new Font("Serif", Font.PLAIN, 14)); // Setting Font and Size for text Area
 		searchCourse.setEnabled(false); // Disable buttons
 		addCourse.setEnabled(false);
@@ -93,27 +94,12 @@ public class StudentGUI extends ClientGUI {
 	private void signInButton() {
 		signIn.addActionListener((ActionEvent e) -> { // Done
 			try {
-				String name = userName.getText();
-				String userID = ID.getText();
-				signIn.setEnabled(false); // Disable sign in button
-				userName.setEditable(false);
-				ID.setEditable(false);
-
-				client = new Client(host, port, name, Integer.parseInt(userID), this);
+				this.client.setUsername(userName.getText());
+				this.client.setUserID(Integer.parseInt(ID.getText()));
 
 				client.communicateWithServer();
-				System.out.println("Student connected");
-				searchCourse.setEnabled(true);
-				// Enable button
-				addCourse.setEnabled(true);
-				removeCourse.setEnabled(true);
-				displayAll.setEnabled(true);
-				courseInCart.setEnabled(true);
 			} catch (NumberFormatException error) {
 				displayErrorMessage("ID must be a number. Please try again.");
-				userName.setEditable(true);
-				ID.setEditable(true);
-				signIn.setEnabled(true);
 			}
 		});
 
@@ -186,4 +172,19 @@ public class StudentGUI extends ClientGUI {
 		});
 	}
 
+	/**
+	 * Enable and disable buttons on the client.
+	 */
+	@Override
+	public void doButtons() {
+		signIn.setEnabled(false); // Disable sign in button
+		userName.setEditable(false);
+		ID.setEditable(false);
+		searchCourse.setEnabled(true); // Enable client usage buttons
+		addCourse.setEnabled(true);
+		removeCourse.setEnabled(true);
+		displayAll.setEnabled(true);
+		courseInCart.setEnabled(true);
+	}
+	
 }

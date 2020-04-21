@@ -61,14 +61,11 @@ public class User implements Runnable {
 			this.socket = socket;
 			socketOut = new ObjectOutputStream(socket.getOutputStream());
 			socketIn = new ObjectInputStream(socket.getInputStream());
-			username = (String) socketIn.readObject(); // Read username
-			ID = (Integer) socketIn.readObject(); // Read ID
+			this.writeMsg(app.genClientId().toString());
 			this.clients = clients;
 			this.app = app;
-			st = app.loadStudent(username, ID);
+			this.st = null;
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -91,22 +88,36 @@ public class User implements Runnable {
 	 * Run method communicates between server and clients.
 	 */
 	public void run() {
-		running = (st != null);
-		System.out.println(username + " has connected.");
-		// if we have no user, we have no program!
-		while (running) {
-			try {
-				Command cm = (Command) socketIn.readObject();
-				this.decodeCommand(cm); // Decode the type of message and call appropriate function
-			} catch (IOException e) {
-				running = false;
-				System.out.println(username + " has disconnected");
-			} catch (ClassNotFoundException e2) {
-				break;
+		try {
+			do {
+				username = (String) socketIn.readObject(); // Read username
+				ID = (Integer) socketIn.readObject(); // Read ID
+				st = app.loadStudent(username, ID);
+				if (st == null) {
+					this.writeErrorMsg("That user id exists, but the username is not the same!");
+				}
+			} while(st == null);
+			this.writeMsg("Connected!");
+			running = (st != null);
+			System.out.println(username + " has connected.");
+			// if we have no user, we have no program!
+			while (running) {
+				try {
+					Command cm = (Command) socketIn.readObject();
+					this.decodeCommand(cm); // Decode the type of message and call appropriate function
+				} catch (IOException e) {
+					running = false;
+					System.out.println(username + " has disconnected");
+				} catch (ClassNotFoundException e2) {
+					break;
+				}
 			}
+			clients.remove(this); // Remove yourself out of user list and close all sockets.
+			this.close();
+		} catch (ClassNotFoundException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		clients.remove(this); // Remove yourself out of user list and close all sockets.
-		this.close();
 	}
 
 	/**

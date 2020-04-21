@@ -32,9 +32,13 @@ public class Client implements Runnable {
 	 */
 	private String username;
 	/**
-	 * ID is the id of the user.
+	 * studentID is the id of the student.
 	 */
-	private Integer ID;
+	private Integer studentID;
+	/**
+	 * id is the unique id of the client.
+	 */
+	private Integer id;
 	/**
 	 * Port is the port the server is running on.
 	 */
@@ -49,7 +53,8 @@ public class Client implements Runnable {
 	private boolean running;
 
 	/**
-	 * Constructor of Client that initializes member variables to given data.
+	 * Constructor of Client that initializes member variables to given data and
+	 * connects to server.
 	 * 
 	 * @param server   is the name of the server.
 	 * @param port     is the port the server is running on.
@@ -57,28 +62,81 @@ public class Client implements Runnable {
 	 * @param ID       is the ID of the user.
 	 * @param cg       is the GUI representation of this client.
 	 */
-	public Client(String server, int port, String username, Integer ID, ClientGUI cg) {
-		this.server = server;
-		this.port = port;
-		this.username = username;
-		this.ID = ID;
+	public Client(String server, int port, ClientGUI cg) {
+		try {
+			this.server = server;
+			this.port = port;
+			socket = new Socket(this.server, this.port);
+			socketIn = new ObjectInputStream(socket.getInputStream());
+			socketOut = new ObjectOutputStream(socket.getOutputStream());
+			this.id = Integer.parseInt((String) socketIn.readObject());
+		} catch (NumberFormatException | ClassNotFoundException | IOException e) {
+			cg.displayErrorMessage("Unable to connect to the server!");
+			e.printStackTrace();
+		}
 		this.cg = cg;
 		this.running = true;
+		this.id = 0;
 		pool = Executors.newCachedThreadPool();
 	}
 
 	/**
-	 * Establish communication between client and server.
+	 * Fetch the username
+	 * 
+	 * @return the username for the client.
+	 */
+	public String getUsername() {
+		return this.username;
+	}
+
+	/**
+	 * Set the username
+	 * 
+	 * @return the username for the client.
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * Fetch the username
+	 * 
+	 * @return the username for the client.
+	 */
+	public int getUserID() {
+		return this.studentID;
+	}
+
+	/**
+	 * Set the username
+	 * 
+	 * @return the username for the client.
+	 */
+	public void setUserID(Integer ID) {
+		this.studentID = ID;
+	}
+
+	/**
+	 * Establish communication user between client and server.
 	 */
 	public void communicateWithServer() {
 		try {
-			socket = new Socket(server, port);
-			socketIn = new ObjectInputStream(socket.getInputStream());
-			socketOut = new ObjectOutputStream(socket.getOutputStream());
 			socketOut.writeObject(username);
-			socketOut.writeObject(ID);
-			pool.execute(this);
+			socketOut.writeObject(studentID);
+			String msg = (String) socketIn.readObject();
+			if (msg.contains("ERROR")) {
+				String errorMessage = msg.replace("ERROR", "");
+				cg.displayErrorMessage(errorMessage); // Display error message.
+			} else {
+				System.out.println("Connected with client id " + this.id);
+				cg.doButtons();
+				pool.execute(this);
+				cg.append(msg);
+			}
 		} catch (IOException e) {
+			cg.displayErrorMessage("Cannot connect to server. Program terminated.");
+			System.exit(0);
+		} catch (ClassNotFoundException e) {
 			cg.displayErrorMessage("Cannot connect to server. Program terminated.");
 			System.exit(0);
 		}
@@ -141,4 +199,5 @@ public class Client implements Runnable {
 			e.printStackTrace();
 		}
 	}
+
 }
