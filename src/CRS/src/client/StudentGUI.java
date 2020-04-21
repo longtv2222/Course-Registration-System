@@ -96,7 +96,6 @@ public class StudentGUI extends ClientGUI {
 			try {
 				this.client.setUsername(userName.getText());
 				this.client.setUserID(Integer.parseInt(ID.getText()));
-
 				client.communicateWithServer();
 			} catch (NumberFormatException error) {
 				displayErrorMessage("ID must be a number. Please try again.");
@@ -186,5 +185,5 @@ public class StudentGUI extends ClientGUI {
 		displayAll.setEnabled(true);
 		courseInCart.setEnabled(true);
 	}
-	
+
 }

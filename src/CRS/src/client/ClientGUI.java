@@ -325,13 +325,6 @@ public class ClientGUI extends JFrame {
 				this.studentDialogue(studentName, studentID);
 			}
 		}
-
-	}
-
-	/**
-	 * Enable and disable buttons on the client.
-	 */
-	public void doButtons() {
 	}
 
 	/**
@@ -342,6 +335,11 @@ public class ClientGUI extends JFrame {
 	public static void main(String[] args) {
 		ClientGUI client = new ClientGUI("localhost", 9098);
 		client.adminUserDialogue();
+	}
+
+	public void doButtons() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
