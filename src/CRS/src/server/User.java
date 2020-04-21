@@ -75,6 +75,7 @@ public class User implements Runnable {
 	 */
 	public void close() {
 		try {
+//			this.writeErrorMsg("Server is shutting down, please restart the client in a bit.");
 			socketIn.close();
 			socketOut.close();
 			socket.close();
