@@ -3,7 +3,9 @@ package CRS.src.shared;
 import java.io.Serializable;
 
 public class Command implements Serializable {
-
+	/**
+	 * The following values are unique command types for command class. {@value}
+	 */
 	private static final long serialVersionUID = 1L;
 	public static final int SEARCH_COURSE = 0;
 	public static final int ADD_COURSE = 1;

@@ -7,6 +7,12 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * @author Cloud Chagnon - UCID: 30067919
+ * @author Viet Long Ta - UCID: 30069130
+ * @version 1.0
+ * @since APRIL 10TH,2020.
+ */
 public class Server {
 	/**
 	 * serverSocket represents the connection between server and client.
@@ -69,7 +75,7 @@ public class Server {
 						// Closing the server.
 						System.out.println("Exiting!");
 						for (User user : clientList) {
-							System.out.println("Stopping user "+ user.getID());
+							System.out.println("Stopping user " + user.getID());
 							user.writeErrorMsg("Server is shutting down! Please restart the client to reconnect.");
 							user.close(); // Closing all threads of this server.
 						}
