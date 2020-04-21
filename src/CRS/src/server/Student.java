@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class Student {
 	/**
+	 * user is the User that is currently using the student.
+	 */
+	private User user;
+	/**
 	 * studenetName is the name of the student.
 	 */
 	private String studentName;
@@ -112,6 +116,19 @@ public class Student {
 	}
 
 	/**
+	 * Gets the user that is currently logged in
+	 * @return The user that is currently logged in.
+	 */
+	public User getUser() {
+		return this.user;
+	}
+	/**
+	 * Sets the user to the user that is logging in, or null if no one.
+	 * @param user The user logging in
+	 */
+	public void setUser(User user) {
+		this.user = user;	}
+	/**
 	 * Add a new registration to this student's registration list.
 	 * 
 	 * @param registration is the new registration student wishes to add.
@@ -138,13 +155,21 @@ public class Student {
 	 */
 	public boolean canRegister(Course course) {
 		if (this.studentRegList.size() >= 6) {
-			System.err.println("Error! Student cannot register, no schedual availablility.");
+			user.writeErrorMsg("Error! Student cannot register, no schedual availablility.");
 			return false;
 		}
 		if (!this.studentTakenList.isEmpty() && this.studentTakenList.contains(course)) {
 			if (!this.studentTakenList.containsAll(course.getPreReqs())) {
-				System.err.println("Error! Student cannot register, they have not completed all prerequisites.");
+				user.writeErrorMsg("Error! Student cannot register, they have not completed all prerequisites.");
 				return false;
+			}
+		}
+		if (!this.studentRegList.isEmpty()) {
+			for(Registration reg : this.studentRegList) {
+				if(reg.getTheLecture().getTheCourse().equals(course)) {
+					user.writeErrorMsg("Error! Student cannot register, they are already taking this course!.");
+					return false;
+				}
 			}
 		}
 		return true;

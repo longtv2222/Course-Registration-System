@@ -54,9 +54,11 @@ public class Server {
 			while (running) {
 				User user = new User(serverSocket.accept(), this.clientList, app);
 				pool.execute(user);
+//				if(Server)
 			}
 			serverSocket.close(); // Closing the server.
 			for (User user : clientList) {
+				
 				user.close(); // Closing all threads of this server.
 			}
 			app.close();

@@ -153,8 +153,8 @@ public class Database {
 	 * @throws SQLException Communication error / improper connection
 	 */
 	public void loadAllRegistrations(ArrayList<Course> courses, ArrayList<Student> students) throws SQLException {
-		for (Course c : courses) {
-			sqlServer.setCourseRegistrations(c, students);
+		for(Student s : students) {
+			sqlServer.setStudentRegistrations(s, courses);
 		}
 	}
 

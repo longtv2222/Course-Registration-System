@@ -95,7 +95,14 @@ public class User implements Runnable {
 				st = app.loadStudent(username, ID);
 				if (st == null) {
 					this.writeErrorMsg("That user id exists, but the username is not the same!");
+					continue;
 				}
+				if (st.getUser()!=null) {
+					this.writeErrorMsg("This user is logged in elsewhere! Please log out elsewhere.");
+					st = null;
+					continue;
+				}
+				st.setUser(this);
 			} while(st == null);
 			this.writeMsg("Connected!");
 			running = (st != null);
