@@ -130,8 +130,8 @@ public class Client implements Runnable {
 			} else {
 				System.out.println("Connected with client id " + this.id);
 				cg.doButtons();
-				pool.execute(this);
 				cg.append(msg);
+				pool.execute(this);
 			}
 		} catch (IOException e) {
 			cg.displayErrorMessage("Cannot connect to server. Program terminated.");
@@ -171,6 +171,7 @@ public class Client implements Runnable {
 		while (running) {
 			try {
 				String msg = (String) socketIn.readObject();
+				System.out.println((String)msg);
 				if (msg.contains("ERROR")) {
 					String errorMessage = msg.replace("ERROR", "");
 					cg.displayErrorMessage(errorMessage); // Display error message.

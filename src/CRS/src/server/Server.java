@@ -70,6 +70,7 @@ public class Server {
 						// Closing the server.
 						System.out.println("Exiting!");
 						for (User user : clientList) {
+							System.out.println("Stopping user "+ user.getID());
 							user.writeErrorMsg("Server is shutting down! Please restart the client to reconnect.");
 							user.close(); // Closing all threads of this server.
 						}

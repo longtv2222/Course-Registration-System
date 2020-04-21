@@ -65,6 +65,7 @@ public class User implements Runnable {
 			this.clients = clients;
 			this.app = app;
 			this.st = null;
+			clients.add(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -128,6 +129,9 @@ public class User implements Runnable {
 		}
 	}
 
+	public int getID() {
+		return this.ID;
+	}
 	/**
 	 * Writing a message to client side.
 	 * 
