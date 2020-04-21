@@ -137,7 +137,7 @@ public class DBManager {
 	/**
 	 * Add a new course to the database.
 	 * 
-	 * @param lecture is the new course that needs to be added.
+	 * @param course is the new course that needs to be added.
 	 */
 	public void addCourse(Course course) {
 		try {
@@ -151,7 +151,7 @@ public class DBManager {
 	/**
 	 * Add a new registration to the database.
 	 * 
-	 * @param registration is the new registration that needs to be added.
+	 * @param reg is the new registration that needs to be added.
 	 */
 	public void addRegistration(Registration reg) {
 		try {
@@ -165,7 +165,7 @@ public class DBManager {
 	/**
 	 * Remove a registration out of the database.
 	 * 
-	 * @param registration is the registration that needs to be removed.
+	 * @param reg is the registration that needs to be removed.
 	 */
 	public void removeRegistration(Registration reg) {
 		try {

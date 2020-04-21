@@ -12,7 +12,7 @@ To run this this program, there are two parts:
 In your terminal, run the jar in bin called `Server.jar`, eg
 
 ```bash
-java Server.jar
+java -jar Server.jar
 ```
 
 Then, it will ask you for information on the port to run the server on, the jdbc mysql address, the database to use, as well as the username and password for the server.

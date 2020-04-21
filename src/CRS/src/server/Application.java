@@ -206,7 +206,7 @@ public class Application {
 	 * 
 	 * @param student is the student that needs to be added to the lecture.
 	 * @param lecture is the lecture that will accept the student.
-	 * @return
+	 * @return the message, depends on if registration was successfull or not.
 	 */
 	public String registerStudentCourse(Student student, Lecture lecture) { // Done
 		Registration register = new Registration();
