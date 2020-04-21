@@ -15,6 +15,7 @@ public class Command implements Serializable {
 	public static final int VIEW_ALL_STUDENT = 7;
 	public static final int ADD_NEW_STUDENT = 8;
 	public static final int ADD_NEW_LECTURE = 9;
+	public static final int COURSES_TAKEN = 10;
 	/**
 	 * Type of command.
 	 */

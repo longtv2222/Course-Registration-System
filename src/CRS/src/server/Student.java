@@ -117,17 +117,22 @@ public class Student {
 
 	/**
 	 * Gets the user that is currently logged in
+	 * 
 	 * @return The user that is currently logged in.
 	 */
 	public User getUser() {
 		return this.user;
 	}
+
 	/**
 	 * Sets the user to the user that is logging in, or null if no one.
+	 * 
 	 * @param user The user logging in
 	 */
 	public void setUser(User user) {
-		this.user = user;	}
+		this.user = user;
+	}
+
 	/**
 	 * Add a new registration to this student's registration list.
 	 * 
@@ -155,19 +160,25 @@ public class Student {
 	 */
 	public boolean canRegister(Course course) {
 		if (this.studentRegList.size() >= 6) {
-			user.writeErrorMsg("Error! Student cannot register, no schedual availablility.");
+			if (user != null) {
+				user.writeErrorMsg("Error! Student cannot register, no schedual availablility.");
+			}
 			return false;
 		}
 		if (!this.studentTakenList.isEmpty() && this.studentTakenList.contains(course)) {
 			if (!this.studentTakenList.containsAll(course.getPreReqs())) {
-				user.writeErrorMsg("Error! Student cannot register, they have not completed all prerequisites.");
+				if (user != null) {
+					user.writeErrorMsg("Error! Student cannot register, they have not completed all prerequisites.");
+				}
 				return false;
 			}
 		}
 		if (!this.studentRegList.isEmpty()) {
-			for(Registration reg : this.studentRegList) {
-				if(reg.getTheLecture().getTheCourse().equals(course)) {
-					user.writeErrorMsg("Error! Student cannot register, they are already taking this course!.");
+			for (Registration reg : this.studentRegList) {
+				if (reg.getTheLecture().getTheCourse().equals(course)) {
+					if (user != null) {
+						user.writeErrorMsg("Error! Student cannot register, they are already taking this course!.");
+					}
 					return false;
 				}
 			}
@@ -184,7 +195,7 @@ public class Student {
 	public String listRegistered() {
 		String s = "Courses registered in:";
 		for (Registration r : this.studentRegList) {
-			s += r + "\n";
+			s += "\n" + r;
 		}
 		return s;
 	}
@@ -197,7 +208,7 @@ public class Student {
 	public String listTaken() {
 		String s = "Courses taken:";
 		for (Course c : this.studentTakenList) {
-			s += c.getCourseName() + " " + c.getCourseNum() + "\n";
+			s += "\n" + c.getCourseName() + " " + c.getCourseNum();
 		}
 		return s;
 	}
@@ -222,6 +233,15 @@ public class Student {
 	 */
 	public ArrayList<Registration> getStudentRegList() {
 		return this.studentRegList;
+	}
+
+	/**
+	 * Get the taken list of this student.
+	 * 
+	 * @return Member variable studentRegList.
+	 */
+	public ArrayList<Course> getStudentTakenList() {
+		return this.studentTakenList;
 	}
 
 }

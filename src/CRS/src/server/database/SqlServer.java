@@ -375,6 +375,7 @@ public class SqlServer {
 		ResultSet rs = statement.executeQuery("SELECT * FROM `lectures` WHERE course ='"
 				+ course.getCourseName().toUpperCase() + course.getCourseNum() + "'");
 		while (rs.next()) {
+//			System.out.println(rs.getInt("id") + " " + rs.getInt("cap"));
 			Lecture lec = new Lecture(rs.getInt("id"), rs.getInt("cap"));
 			course.addLecture(lec);
 		}

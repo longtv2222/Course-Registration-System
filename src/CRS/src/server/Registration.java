@@ -22,8 +22,8 @@ public class Registration {
 	 * @return a string that displays the result of registration.
 	 */
 	public String completeRegistration(Student st, Lecture of) {
-		this.setTheStudent(st);
 		this.setTheLecture(of);
+		this.setTheStudent(st);
 		return this.addRegistration();
 	}
 

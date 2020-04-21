@@ -62,7 +62,6 @@ public class Server {
 						while (running) {
 							if (keyboard.hasNextLine()) {
 								if (keyboard.nextLine().toLowerCase().equals("exit")) {
-									System.out.println("testing exit!");
 									running = false;
 								}
 							}

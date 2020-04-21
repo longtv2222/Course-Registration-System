@@ -132,6 +132,7 @@ public class User implements Runnable {
 	public int getID() {
 		return this.ID;
 	}
+
 	/**
 	 * Writing a message to client side.
 	 * 
@@ -180,6 +181,9 @@ public class User implements Runnable {
 			break;
 		case Command.COURSE_IN_CART:
 			courseInCart(cm.getMessage());
+			break;
+		case Command.COURSES_TAKEN:
+			courseTaken(cm.getMessage());
 			break;
 		case Command.SEARCH_STUDENT_ID: // Admin
 			searchStudentID(cm.getMessage());
@@ -251,7 +255,8 @@ public class User implements Runnable {
 	private void searchStudentID(String id) {
 		Student searchedStudent = app.searchStudents(Integer.parseInt(id));
 		if (searchedStudent != null)
-			writeMsg(searchedStudent.toString());
+			writeMsg(searchedStudent.toString() + "\n\n" + searchedStudent.listRegistered()
+					+ "\n\n" + searchedStudent.listTaken());
 		else
 			writeErrorMsg("The student with ID: " + id + " does not exist in the system.");
 	}
@@ -266,6 +271,18 @@ public class User implements Runnable {
 			writeErrorMsg("You have no course in your cart rightnow.");
 		else
 			writeMsg(st.listRegistered());
+	}
+
+	/**
+	 * Display all the courses student has taken.
+	 * 
+	 * @param message contains data that will be processed in back end.
+	 */
+	private void courseTaken(String message) {
+		if (st.getStudentTakenList().size() == 0)
+			writeErrorMsg("You have not taken any courses.");
+		else
+			writeMsg(st.listTaken());
 	}
 
 	/**

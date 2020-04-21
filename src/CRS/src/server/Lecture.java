@@ -98,7 +98,8 @@ public class Lecture {
 		st += "Section Num: " + getSecNum() + ", section cap: " + getSecCap() + "\n";
 		st += "Students:\n";
 		for (Registration r : this.offeringRegList) {
-			st += r.getTheStudent();
+//			System.out.println(this.offeringRegList.size()+"PrinTing lecture registrations!" + r.getTheStudent());
+			st += r.getTheStudent()+"\n";
 		}
 		return st;
 	}
@@ -109,9 +110,8 @@ public class Lecture {
 	 * @param registration is the new registration that will be added.
 	 */
 	public void addRegistration(Registration registration) {
-		// TODO Auto-generated method stub
 		offeringRegList.add(registration);
-
+//		System.out.println(this.offeringRegList.size());
 	}
 
 	/**

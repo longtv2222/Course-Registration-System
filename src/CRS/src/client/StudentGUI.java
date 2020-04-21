@@ -29,6 +29,10 @@ public class StudentGUI extends ClientGUI {
 	 */
 	private JButton courseInCart = new JButton("Course In Cart");
 	/**
+	 * Button to display all courses that have been taken.
+	 */
+	private JButton courseTaken = new JButton("List Taken Courses");
+	/**
 	 * Button to sign in.
 	 */
 	private JButton signIn = new JButton("Sign in");
@@ -55,11 +59,13 @@ public class StudentGUI extends ClientGUI {
 		removeCourse.setEnabled(false);
 		displayAll.setEnabled(false);
 		courseInCart.setEnabled(false);
+		courseTaken.setEnabled(false);
 		this.searchCourseButton(); // Adding action to buttons
 		this.addCourseButton();
 		this.removeCourseButton();
 		this.displayAllButton();
 		this.courseInCartButton();
+		this.coursesTakenButton();
 		this.signInButton();
 		JPanel subPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
 		subPanel.add(searchCourse);
@@ -67,6 +73,7 @@ public class StudentGUI extends ClientGUI {
 		subPanel.add(removeCourse);
 		subPanel.add(displayAll);
 		subPanel.add(courseInCart);
+		subPanel.add(courseTaken);
 		subPanel.add(exit);
 		add(subPanel, BorderLayout.SOUTH);
 
@@ -172,6 +179,14 @@ public class StudentGUI extends ClientGUI {
 	}
 
 	/**
+	 * Adding action to courses in cart button.
+	 */
+	private void coursesTakenButton() {
+		courseTaken.addActionListener((ActionEvent e) -> { // Adding action to CourseInCart
+			client.sendMessage(new Command(Command.COURSES_TAKEN, " "));
+		});
+	}
+	/**
 	 * Enable and disable buttons on the client.
 	 */
 	@Override
@@ -184,6 +199,6 @@ public class StudentGUI extends ClientGUI {
 		removeCourse.setEnabled(true);
 		displayAll.setEnabled(true);
 		courseInCart.setEnabled(true);
+		courseTaken.setEnabled(true);
 	}
-
 }

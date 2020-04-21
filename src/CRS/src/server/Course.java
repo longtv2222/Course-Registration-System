@@ -66,7 +66,8 @@ public class Course {
 	public void addLecture(Lecture lecture) {
 		if (lecture != null && lecture.getTheCourse() == null) {
 			lecture.setTheCourse(this);
-			lectures.add(lecture);
+			this.lectures.add(lecture);
+//			System.out.println(this.lectures.size());
 			return;
 		}
 		System.err.println("Error! This section belongs to another course!");

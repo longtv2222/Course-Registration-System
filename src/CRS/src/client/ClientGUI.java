@@ -127,6 +127,10 @@ public class ClientGUI extends JFrame {
 	 */
 	public void displayErrorMessage(String message) {
 		JOptionPane.showMessageDialog(null, message, "Error Message", JOptionPane.ERROR_MESSAGE);
+		if (message.equals("Unable to connect to the server!")
+				|| message.equals("Server is shutting down! Please restart the client to reconnect.")) {
+			System.exit(0);
+		}
 	}
 
 	/**
