@@ -54,11 +54,13 @@ public class Server {
 			while (running) {
 				User user = new User(serverSocket.accept(), this.clientList, app);
 				pool.execute(user);
-//				if(Server)
+				if(Server.keyboard.hasNextLine() && Server.keyboard.nextLine().toLowerCase().equals("exit")) {
+					running = false;
+				}
 			}
 			serverSocket.close(); // Closing the server.
 			for (User user : clientList) {
-				
+				user.writeErrorMsg("Server is shutting down! Please restart the client to reconnect.");
 				user.close(); // Closing all threads of this server.
 			}
 			app.close();
@@ -97,7 +99,7 @@ public class Server {
 			}
 		}
 		Server server = new Server(port);
-		System.out.println("Server is starting");
+		System.out.println("Server is starting, type 'exit' to exit.");
 		server.communicateWithClient();
 	}
 }
