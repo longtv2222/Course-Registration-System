@@ -171,7 +171,7 @@ public class Client implements Runnable {
 		while (running) {
 			try {
 				String msg = (String) socketIn.readObject();
-				System.out.println((String)msg);
+//				System.out.println((String)msg);
 				if (msg.contains("ERROR")) {
 					String errorMessage = msg.replace("ERROR", "");
 					cg.displayErrorMessage(errorMessage); // Display error message.
